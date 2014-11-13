@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "gui/gtk/GtkMainWindow.cpp"
+#include "gui/gtk/GtkMainWindow.h"
 
 #include <gtkmm.h>
 

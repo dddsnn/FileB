@@ -2,6 +2,7 @@
 #define FILE_H
 
 #include <string>
+#include <stdlib.h>
 
 #include "Path.h"
 

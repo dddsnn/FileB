@@ -1,6 +1,6 @@
 bin_PROGRAMS = fileb
-fileb_CPPFLAGS = $(GTKMM_CFLAGS)
-fileb_LDFLAGS = $(GTKMM_LIBS)
+fileb_CPPFLAGS = -std=c++03 -Wall -Wextra -pedantic $(GTKMM_CFLAGS)
+fileb_LDADD = $(GTKMM_LIBS)
 fileb_SOURCES = \
 	src/Application.cpp \
 	src/fs/Directory.cpp \

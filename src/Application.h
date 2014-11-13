@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <string>
+#include <stdlib.h>
 
 namespace FileB {
 	/// Global Settings
