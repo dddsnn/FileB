@@ -1,9 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_H_
+#define MAINWINDOW_H_
 
 #include <vector>
 
-#include "../Application.h"
+#include "../Controller.h"
+#include "../globals.h"
 #include "Pane.h"
 
 namespace FileB {
@@ -23,8 +24,8 @@ namespace FileB {
 		/// Shows a directory in the active View.
 		virtual void showDir(Path p) = 0;
 	protected:
-		MainWindow(const struct Settings& s);
-		const struct Settings settings;
+		MainWindow(const Controller& c);
+		const Controller& controller;
 		std::vector<Pane*> panes;
 		Pane* act_pane;
 	};

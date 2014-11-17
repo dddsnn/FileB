@@ -2,8 +2,8 @@
 
 using namespace FileB;
 
-Pane::Pane(const struct Settings& s):
-	settings(s)
+Pane::Pane(const Controller& c):
+	controller(c)
 {
 }
 

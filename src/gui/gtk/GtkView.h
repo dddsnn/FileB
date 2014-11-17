@@ -1,5 +1,5 @@
-#ifndef GTKVIEW_H
-#define GTKVIEW_H
+#ifndef SRC_GUI_GTK_GTKVIEW_H_
+#define SRC_GUI_GTK_GTKVIEW_H_
 
 #include <gtkmm.h>
 
@@ -36,12 +36,12 @@ namespace FileB {
 		};
 
 	public:
-		GtkView(const struct Settings& s);
+		GtkView(const Controller& c);
 		virtual ~GtkView();
 		void showDir(Path path);
 	private:
 		Columns cols;
-		Glib::RefPtr<Gtk::TreeStore> model;
+		Glib::RefPtr<Gtk::TreeStore> tree_model;
 		Gtk::TreeView* tree;
 		// cellrenderers and columns
 		Gtk::CellRendererText cellrend_name,

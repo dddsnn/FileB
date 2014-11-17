@@ -1,12 +1,15 @@
 #include "GtkMainWindow.h"
 #include "GtkPane.h"
+#include "../../Application.h"
+#include "../../Controller.h"
+
+#include <iostream>
 
 using namespace FileB;
 
-GtkMainWindow::GtkMainWindow(const struct Settings& s):
-	MainWindow(s)
-{
-	panes.push_back(new GtkPane(settings));
+GtkMainWindow::GtkMainWindow(const Controller& c) :
+		MainWindow(c) {
+	panes.push_back(new GtkPane(controller));
 	act_pane = panes[0];
 	addr_buf = Gtk::EntryBuffer::create();
 	// make the widgets take up all available space
@@ -23,8 +26,7 @@ GtkMainWindow::GtkMainWindow(const struct Settings& s):
 }
 
 GtkMainWindow::~GtkMainWindow() {
-	for(std::vector<Pane*>::iterator i = panes.begin();
-		i != panes.end(); i++)
+	for(std::vector<Pane*>::iterator i = panes.begin(); i != panes.end(); i++)
 		delete *i;
 }
 

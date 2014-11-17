@@ -1,13 +1,13 @@
-#ifndef PATH_H
-#define PATH_H
+#ifndef SRC_FS_PATH_H_
+#define SRC_FS_PATH_H_
 
 #include <string>
 
 namespace FileB {
-	class Directory;
+class Directory;
 
-	/// A path in the filesystem.
-	class Path {
+/// A path in the filesystem.
+class Path {
 	public:
 		Path();
 		/// Constructs a path from a string.
@@ -28,7 +28,7 @@ namespace FileB {
 	private:
 		/// The path string encoded in the system's locale.
 		std::string path;
-	};
+};
 }
 
 #endif

@@ -2,8 +2,8 @@
 
 using namespace FileB;
 
-View::View(const struct Settings& s):
-	settings(s)
+View::View(const Controller& c):
+	controller(c)
 {
 //	vsettings.current_dir;
 }

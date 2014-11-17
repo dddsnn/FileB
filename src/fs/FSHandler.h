@@ -9,8 +9,8 @@
 #include "Directory.h"
 
 namespace FileB {
-	/// Singleton class to handle all low-level file operations.
-	class FSHandler {
+/// Singleton class to handle all low-level file operations.
+class FSHandler {
 	public:
 		/// Returns the instance of this singleton. 
 		static FSHandler& instance();
@@ -35,7 +35,7 @@ namespace FileB {
 		void safeStat(File* f);
 		static FSHandler* m_instance;
 		Directory* root;
-	};
+};
 }
 
 #endif

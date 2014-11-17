@@ -7,14 +7,14 @@
 #include "GtkView.h"
 
 namespace FileB {
-	/// Pane using the Gtk+ toolkit.
-	class GtkPane : public Pane, public Gtk::Alignment {
+/// Pane using the Gtk+ toolkit.
+class GtkPane: public Pane, public Gtk::Alignment {
 	public:
-		GtkPane(const struct Settings& s);
+		GtkPane(const Controller& c);
 		virtual ~GtkPane();
 		GtkView& getActiveView();
 	private:
-	};
+};
 }
 
 #endif

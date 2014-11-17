@@ -2,8 +2,8 @@
 
 using namespace FileB;
 
-MainWindow::MainWindow(const struct Settings& s):
-	settings(s)
+MainWindow::MainWindow(const Controller& c):
+	controller(c)
 {
 }
 

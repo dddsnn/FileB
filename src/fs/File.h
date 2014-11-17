@@ -1,5 +1,5 @@
-#ifndef FILE_H
-#define FILE_H
+#ifndef SRC_FS_FILE_H_
+#define SRC_FS_FILE_H_
 
 #include <string>
 #include <stdlib.h>
@@ -7,17 +7,16 @@
 #include "Path.h"
 
 namespace FileB {
-	class Directory;
+class Directory;
 
-	/// A directory entry.
-	class File {
+/// A directory entry.
+class File {
 	public:
 		File();
 		/// Constructs a File from a path.
 		File(const Path path, int type = TYPE_UNKNOWN);
 		/// Constructs a File from a directory and a name.
-		File(const Directory dir, std::string name,
-			int type = TYPE_UNKNOWN);
+		File(const Directory dir, std::string name, int type = TYPE_UNKNOWN);
 		virtual ~File();
 		/// Returns the name of this File.
 		const std::string getName() const;
@@ -39,7 +38,6 @@ namespace FileB {
 		void setSize(off_t size);
 		time_t getMTime() const;
 		void setMTime(time_t time);
-//		virtual  void asd();
 		enum Type {
 			TYPE_UNKNOWN,
 			TYPE_REGULAR,
@@ -63,7 +61,7 @@ namespace FileB {
 		gid_t group;
 		off_t size;
 		time_t mtime;
-	};
+};
 }
 
 #endif

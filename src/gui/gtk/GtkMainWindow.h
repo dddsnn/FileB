@@ -3,7 +3,6 @@
 
 #include <gtkmm.h>
 
-#include "../../Application.h"
 #include "../MainWindow.h"
 #include "GtkPane.h"
 #include "GtkView.h"
@@ -12,7 +11,7 @@ namespace FileB {
 	/// Main Window using the Gtk+ toolkit.
 	class GtkMainWindow : public MainWindow, public Gtk::Window {
 	public:
-		GtkMainWindow(const struct Settings& s);
+		GtkMainWindow(const Controller& c);
 		virtual ~GtkMainWindow();
 		GtkPane& getActivePane();
 		GtkView& getActiveView();

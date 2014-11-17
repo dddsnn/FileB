@@ -3,7 +3,8 @@
 
 #include <vector>
 
-#include "../Application.h"
+#include "../globals.h"
+#include "../Controller.h"
 #include "View.h"
 
 namespace FileB {
@@ -20,8 +21,8 @@ namespace FileB {
 		/// Returns the currently active View of this Pane.
 		virtual View& getActiveView() = 0;
 	protected:
-		Pane(const struct Settings& s);
-		const struct Settings settings;
+		Pane(const Controller& c);
+		const Controller& controller;
 		std::vector<View*> views;
 		View* act_view;
 	};

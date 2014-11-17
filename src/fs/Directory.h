@@ -1,13 +1,15 @@
-#ifndef DIRECTORY_H
-#define DIRECTORY_H
+#ifndef SRC_FS_DIRECTORY_H_
+#define SRC_FS_DIRECTORY_H_
 
 #include <vector>
 
 #include "File.h"
 
 namespace FileB {
-	/// A directory entry that is itself a directory.
-	class Directory : public File, public std::vector<File*> {
+class Path;
+
+/// A directory entry that is itself a directory.
+class Directory: public File, public std::vector<File*> {
 	public:
 		Directory();
 		/// Constructs a Directory from a path string.
@@ -21,7 +23,7 @@ namespace FileB {
 		void markComplete();
 	private:
 		bool complete;
-	};
+};
 }
 
 #endif
