@@ -39,6 +39,7 @@ namespace FileB {
 		GtkView(const Controller& c);
 		virtual ~GtkView();
 		void showDir(Path path);
+		void update();
 	private:
 		Columns cols;
 		Glib::RefPtr<Gtk::TreeStore> tree_model;

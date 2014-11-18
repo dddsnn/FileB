@@ -171,3 +171,6 @@ void GtkView::updateMTimeCol(Gtk::CellRenderer*,
 	}
 }
 
+void GtkView::update() {
+//TODO
+}

@@ -3,6 +3,8 @@ fileb_CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic $(GTKMM_CFLAGS)
 fileb_LDADD = $(GTKMM_LIBS)
 fileb_SOURCES = \
 	src/Application.cpp \
+	src/Observable.cpp \
+	src/Observer.cpp \
 	src/fs/Directory.cpp \
 	src/fs/File.cpp \
 	src/fs/FSHandler.cpp \

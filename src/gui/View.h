@@ -8,6 +8,7 @@
 #include "../Controller.h"
 #include "../fs/Path.h"
 #include "ViewModel.h"
+#include "../Observer.h"
 
 namespace FileB {
 //	struct ViewSettings {
@@ -20,11 +21,13 @@ namespace FileB {
  * This class should be subclassed implementing an actual window with
  * a specific toolkit.
  */
-class View {
+class View : public Observer {
 	public:
 		virtual ~View();
 		/// Displays a directory in this View.
 		virtual void showDir(Path path) = 0;
+		virtual void update() = 0;
+		ViewModel& getModel() const;
 
 	protected:
 		View(const Controller& c);

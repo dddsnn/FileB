@@ -2,6 +2,7 @@
 #define SRC_GUI_VIEWMODEL_H_
 
 #include "../fs/Directory.h"
+#include "../Observable.h"
 
 namespace FileB {
 
@@ -9,7 +10,7 @@ struct FileEntry {
 	std::string name;
 };
 
-class ViewModel {
+class ViewModel : public Observable {
 	public:
 		ViewModel();
 		virtual ~ViewModel();
