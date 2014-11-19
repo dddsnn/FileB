@@ -10,6 +10,6 @@ View::View(const Controller& c) :
 View::~View() {
 }
 
-ViewModel& FileB::View::getModel() const {
+ViewModel& FileB::View::getModel() {
 	return model;
 }

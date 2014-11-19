@@ -6,9 +6,16 @@
 
 namespace FileB {
 
-struct FileEntry {
-	std::string name;
-};
+// TODO do i need a view specific separate representation for File?
+//struct FileEntry {
+//		std::string name;
+//		int type;
+//		int content;
+//		uid_t owner;
+//		gid_t group;
+//		off_t size;
+//		time_t mtime;
+//};
 
 class ViewModel : public Observable {
 	public:

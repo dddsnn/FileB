@@ -2,7 +2,7 @@
 #define SRC_GUI_VIEW_H_
 
 #include <string>
-#include <vector>
+#include <forward_list>
 
 #include "../globals.h"
 #include "../Controller.h"
@@ -25,9 +25,9 @@ class View : public Observer {
 	public:
 		virtual ~View();
 		/// Displays a directory in this View.
-		virtual void showDir(Path path) = 0;
+		virtual void showFiles(const std::forward_list<const File*>& files) = 0;
 		virtual void update() = 0;
-		ViewModel& getModel() const;
+		ViewModel& getModel();
 
 	protected:
 		View(const Controller& c);

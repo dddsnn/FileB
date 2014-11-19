@@ -21,7 +21,7 @@ GtkMainWindow::GtkMainWindow(const Controller& c) :
 	add(grid);
 	grid.attach(addr_bar, 0, 0, 1, 1);
 	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 1, 1);
-	showDir(Path("/home/dddsnn"));
+	// TODO showDir(Path("/home/dddsnn"));
 	show_all_children();
 }
 
@@ -40,5 +40,5 @@ GtkView& GtkMainWindow::getActiveView() {
 
 void GtkMainWindow::showDir(Path p) {
 	addr_bar.get_buffer()->set_text(p.getPathString());
-	getActiveView().showDir(p);
+	//TODO getActiveView().showDir(p);
 }
