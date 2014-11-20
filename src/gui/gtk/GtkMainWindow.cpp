@@ -2,6 +2,7 @@
 #include "GtkPane.h"
 #include "../../Application.h"
 #include "../../Controller.h"
+#include "../../fs/FSHandler.h"
 
 #include <iostream>
 
@@ -21,7 +22,15 @@ GtkMainWindow::GtkMainWindow(const Controller& c) :
 	add(grid);
 	grid.attach(addr_bar, 0, 0, 1, 1);
 	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 1, 1);
-	// TODO showDir(Path("/home/dddsnn"));
+
+	// TODO
+	Directory const* dir = FSHandler::instance().listDir(Path("/home/dddsnn"));
+	std::list<const File*> files;
+	for(Directory::const_iterator i = dir->begin(); i!=dir->end(); i++){
+		files.push_back(*i);
+	}
+	getActiveView().showFiles(files);
+
 	show_all_children();
 }
 

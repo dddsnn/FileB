@@ -1,21 +1,30 @@
 #include "Application.h"
 #include "fs/Path.h"
+#include "fs/FSHandler.h"
 
 #include <gtkmm.h>
+#include <iostream>
 
 using namespace FileB;
 
 //struct Settings Application::settings;
 
 /// Starts the application.
-Application::Application(int argc, char *args[]){// :
-		//settings( { false, PREFIX_BASE_2 }), mw(settings) {
+Application::Application(int argc, char *args[]) { // :
+	//settings( { false, PREFIX_BASE_2 }), mw(settings) {
 	//settings.show_hidden = false;
 	//settings.prefix = PREFIX_BASE_2;
 	Gtk::Main kit(argc, args);
-	GtkMainWindow w(*this);
-	w.fullscreen();
-	Gtk::Main::run(w);
+	GtkMainWindow mw(*this);
+	mw.fullscreen();
+	//	Directory const* files = FSHandler::instance().listDir(
+	//			Path("/home/dddsnn"));
+	////	for(Directory::const_iterator i = files->begin(); i != files->end(); i++) {
+	////		std::cout << (*i)->getName() << "asdf" << std::endl;
+	////	}
+	//	getActiveView().showFiles(
+	//			*dynamic_cast<const std::list<const File*>*>(files));
+	Gtk::Main::run(mw);
 }
 
 Application::~Application() {
@@ -133,10 +142,10 @@ std::string Application::getHumanReadableTime(time_t time) {
 
 void Application::openFile(File const* f) {
 	Path path = f->getPath();
-	// if it's a directory, show it
+// if it's a directory, show it
 	if(dynamic_cast<Directory const*>(f))
 		std::cout << "asdf" << std::endl;
-	//mw.getActiveView.showDir(f->getPath());
+//mw.getActiveView.showDir(f->getPath());
 	else
 		std::cout << "opening file " << f->getName() << std::endl;
 }

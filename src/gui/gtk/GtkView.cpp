@@ -18,8 +18,8 @@ GtkView::GtkView(const Controller& c) :
 	viewcol_name.pack_start(cellrend_name);
 	viewcol_name.set_reorderable();
 	tree->append_column(viewcol_name);
-	//viewcol_name.set_cell_data_func(cellrend_name,
-	//sigc::mem_fun(this, &GtkView::updateNameCol));
+	viewcol_name.set_cell_data_func(cellrend_name,
+	sigc::mem_fun(this, &GtkView::updateNameCol));
 
 	viewcol_content.set_title("Type");
 	viewcol_content.pack_start(cellrend_content);
@@ -82,10 +82,11 @@ GtkView::~GtkView() {
 //	// vsettings.current_dir = dir;
 //}
 
-void GtkView::showFiles(const std::forward_list<const File*>& files) {
+void GtkView::showFiles(const std::list<const File*>& files) {
 	tree_model->clear();
 	Gtk::TreeModel::Row row;
-	for(std::forward_list<const File*>::const_iterator i = files.begin();
+	std::list<const File*>::const_iterator j = files.begin();
+	for(std::list<const File*>::const_iterator i = files.begin();
 			i != files.end(); i++) {
 		// don't show . or ..
 		if((*i)->isDot())

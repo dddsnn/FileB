@@ -2,7 +2,7 @@
 #define SRC_GUI_GTK_GTKVIEW_H_
 
 #include <gtkmm.h>
-#include <forward_list>
+#include <list>
 
 #include "../View.h"
 #include "../../fs/Directory.h"
@@ -39,7 +39,7 @@ class GtkView: public View, public Gtk::Alignment {
 	public:
 		GtkView(const Controller& c);
 		virtual ~GtkView();
-		void showFiles(const std::forward_list<const File*>& files);
+		void showFiles(const std::list<const File*>& files);
 //		void showDir(Path path);
 		void update();
 	private:

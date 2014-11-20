@@ -87,7 +87,7 @@ Directory* FSHandler::getDir(const Path path) {
 		return root;
 	Directory* parent = getDir(path.getLevel(path.getDepth() - 1));
 	// check if parent already contains the file
-	for(std::vector<File*>::iterator i = parent->begin();
+	for(std::list<File*>::iterator i = parent->begin();
 		i != parent->end(); i++)
 		{
 		if(!(*i)->getName().compare(path.getBaseName()))
