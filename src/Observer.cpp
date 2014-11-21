@@ -3,6 +3,9 @@
 
 using namespace FileB;
 
+FileB::Observer::Observer() :
+		observable(0) {
+}
 FileB::Observer::Observer(Observable* o) :
 		observable(o) {
 	observe(o);

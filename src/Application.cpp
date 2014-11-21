@@ -161,7 +161,7 @@ void FileB::Application::onFileActivated(const File* f) {
 //		std::cout << "asdf" << std::endl;
 //	dynamic_cast<const std::list<const File*>*>(f);
 //	const std::list<const File*>* l = dynamic_cast<const std::list<const File*>*>(f);
-		mw.getActiveView().getModel().showDir(*dir);
+		mw.getActiveView().getModel().showDir(dir->getPath());
 	}
 //	else
 //		std::cout << "opening file " << p << std::endl;

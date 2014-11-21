@@ -1,4 +1,5 @@
 #include "ViewModel.h"
+#include "../fs/FSHandler.h"
 
 using namespace FileB;
 
@@ -16,10 +17,11 @@ const std::list<const File*>& ViewModel::getCurrentFiles() const {
 	return current_files;
 }
 
-void ViewModel::showDir(const Directory& dir) {
+void ViewModel::showDir(const Path& path) {
+	const Directory* dir = FSHandler::instance().listDir(path);
 	current_files.clear();
 	// TODO there's gotta be a better way than copying. manually.
-	for(Directory::const_iterator i = dir.begin(); i != dir.end(); i++) {
+	for(Directory::const_iterator i = dir->begin(); i != dir->end(); i++) {
 		current_files.push_back(*i);
 	}
 	notify();
