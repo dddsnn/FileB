@@ -30,8 +30,8 @@ class View : public Observer {
 		ViewModel& getModel();
 
 	protected:
-		View(const Controller& c);
-		const Controller& controller;
+		View(Controller& c);
+		Controller& controller;
 //		enum {
 //			ORDER_ASCENDING,
 //			ORDER_DESCENDING,

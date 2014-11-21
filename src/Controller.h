@@ -7,7 +7,7 @@ namespace FileB {
 	class Controller {
 	public:
 		virtual ~Controller() {};
-		virtual void openFile(File const* f) = 0;
+		virtual void onFileActivated(const File* f) = 0;
 	};
 }
 #endif

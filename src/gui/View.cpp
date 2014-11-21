@@ -2,7 +2,7 @@
 
 using namespace FileB;
 
-View::View(const Controller& c) :
+View::View(Controller& c) :
 		Observer(dynamic_cast<Observable*>(&model)), controller(c) {
 //	vsettings.current_dir;
 }

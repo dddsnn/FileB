@@ -8,7 +8,7 @@
 
 using namespace FileB;
 
-GtkMainWindow::GtkMainWindow(const Controller& c) :
+GtkMainWindow::GtkMainWindow(Controller& c) :
 		MainWindow(c) {
 	panes.push_back(new GtkPane(controller));
 	act_pane = panes[0];
@@ -25,11 +25,11 @@ GtkMainWindow::GtkMainWindow(const Controller& c) :
 
 	// TODO
 	Directory const* dir = FSHandler::instance().listDir(Path("/home/dddsnn"));
-	std::list<const File*> files;
-	for(Directory::const_iterator i = dir->begin(); i!=dir->end(); i++){
-		files.push_back(*i);
-	}
-	getActiveView().showFiles(files);
+//	std::list<const File*> files;
+//	for(Directory::const_iterator i = dir->begin(); i!=dir->end(); i++){
+//		files.push_back(*i);
+//	}
+	getActiveView().getModel().showDir(*dir);
 
 	show_all_children();
 }

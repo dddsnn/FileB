@@ -5,7 +5,7 @@
 
 using namespace FileB;
 
-GtkPane::GtkPane(const Controller& c) :
+GtkPane::GtkPane(Controller& c) :
 		Pane(c) {
 	views.push_back(new GtkView(controller));
 	act_view = views[0];

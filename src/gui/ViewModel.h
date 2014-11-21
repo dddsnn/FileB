@@ -21,11 +21,12 @@ class ViewModel : public Observable {
 	public:
 		ViewModel();
 		virtual ~ViewModel();
-		const Directory* getCurrentDir() const;
+		const std::list<const File*>& getCurrentFiles() const;
+		void showDir(const Directory& dir);
 
 	private:
 		//std::vector<int[2]> cols;
-		Directory const* current_dir;
+		std::list<const File*> current_files;
 };
 }
 #endif

@@ -2,7 +2,7 @@
 
 using namespace FileB;
 
-Pane::Pane(const Controller& c):
+Pane::Pane(Controller& c):
 	controller(c)
 {
 }

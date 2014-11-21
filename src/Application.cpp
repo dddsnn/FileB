@@ -10,12 +10,17 @@ using namespace FileB;
 //struct Settings Application::settings;
 
 /// Starts the application.
-Application::Application(int argc, char *args[]) { // :
+Application::Application(int argc, char *args[]) :
+		gtk_app(
+				Gtk::Application::create(argc, args, Glib::ustring(),
+						Gio::APPLICATION_FLAGS_NONE)), mw(*this) { // :
 	//settings( { false, PREFIX_BASE_2 }), mw(settings) {
 	//settings.show_hidden = false;
 	//settings.prefix = PREFIX_BASE_2;
-	Gtk::Main kit(argc, args);
-	GtkMainWindow mw(*this);
+//	Gtk::Main kit(argc, args);
+//	Glib::RefPtr<Gtk::Application> gtk_app = Gtk::Application::create(argc,
+//			args, Glib::ustring(), Gio::APPLICATION_FLAGS_NONE);
+//	GtkMainWindow mw(*this);
 	mw.fullscreen();
 	//	Directory const* files = FSHandler::instance().listDir(
 	//			Path("/home/dddsnn"));
@@ -24,13 +29,12 @@ Application::Application(int argc, char *args[]) { // :
 	////	}
 	//	getActiveView().showFiles(
 	//			*dynamic_cast<const std::list<const File*>*>(files));
-	Gtk::Main::run(mw);
+	gtk_app->run(mw);
 }
 
 Application::~Application() {
 }
 
-#include <iostream>
 int main(int argc, char *args[]) {
 	Path p("/home/dddsnn/Dokumente");
 	Application(argc, args);
@@ -140,12 +144,25 @@ std::string Application::getHumanReadableTime(time_t time) {
 	return res;
 }
 
-void Application::openFile(File const* f) {
-	Path path = f->getPath();
-// if it's a directory, show it
-	if(dynamic_cast<Directory const*>(f))
-		std::cout << "asdf" << std::endl;
-//mw.getActiveView.showDir(f->getPath());
-	else
-		std::cout << "opening file " << f->getName() << std::endl;
+//void Application::openFile(File const* f) {
+//	Path path = f->getPath();
+//// if it's a directory, show it
+//	if(dynamic_cast<Directory const*>(f))
+//		std::cout << "asdf" << std::endl;
+////mw.getActiveView.showDir(f->getPath());
+//	else
+//		std::cout << "opening file " << f->getName() << std::endl;
+//}
+
+void FileB::Application::onFileActivated(const File* f) {
+	// if it's a directory, show it
+	const Directory* dir = dynamic_cast<const Directory*>(f);
+	if(dir) {
+//		std::cout << "asdf" << std::endl;
+//	dynamic_cast<const std::list<const File*>*>(f);
+//	const std::list<const File*>* l = dynamic_cast<const std::list<const File*>*>(f);
+		mw.getActiveView().getModel().showDir(*dir);
+	}
+//	else
+//		std::cout << "opening file " << p << std::endl;
 }

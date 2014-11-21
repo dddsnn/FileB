@@ -21,8 +21,8 @@ namespace FileB {
 		/// Returns the currently active View of this Pane.
 		virtual View& getActiveView() = 0;
 	protected:
-		Pane(const Controller& c);
-		const Controller& controller;
+		Pane(Controller& c);
+		Controller& controller;
 		std::vector<View*> views;
 		View* act_view;
 	};

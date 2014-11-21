@@ -21,10 +21,11 @@ class Application: public Controller {
 		enum {
 			PREFIX_BASE_10, PREFIX_BASE_2
 		};
-		void openFile(File const* f);
+		void onFileActivated(const File* f);
 	private:
 		struct Settings settings;
-		//GtkMainWindow mw;
+		Glib::RefPtr<Gtk::Application> gtk_app;
+		GtkMainWindow mw;
 };
 }
 

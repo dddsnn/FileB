@@ -24,8 +24,8 @@ namespace FileB {
 		/// Shows a directory in the active View.
 		virtual void showDir(Path p) = 0;
 	protected:
-		MainWindow(const Controller& c);
-		const Controller& controller;
+		MainWindow(Controller& c);
+		Controller& controller;
 		std::vector<Pane*> panes;
 		Pane* act_pane;
 	};

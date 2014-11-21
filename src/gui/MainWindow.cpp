@@ -2,7 +2,7 @@
 
 using namespace FileB;
 
-MainWindow::MainWindow(const Controller& c):
+MainWindow::MainWindow(Controller& c):
 	controller(c)
 {
 }

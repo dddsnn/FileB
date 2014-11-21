@@ -9,9 +9,9 @@
 
 namespace FileB {
 	/// Main Window using the Gtk+ toolkit.
-	class GtkMainWindow : public MainWindow, public Gtk::Window {
+	class GtkMainWindow : public MainWindow, public Gtk::ApplicationWindow {
 	public:
-		GtkMainWindow(const Controller& c);
+		GtkMainWindow(Controller& c);
 		virtual ~GtkMainWindow();
 		GtkPane& getActivePane();
 		GtkView& getActiveView();

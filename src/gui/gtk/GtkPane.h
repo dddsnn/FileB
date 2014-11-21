@@ -10,7 +10,7 @@ namespace FileB {
 /// Pane using the Gtk+ toolkit.
 class GtkPane: public Pane, public Gtk::Alignment {
 	public:
-		GtkPane(const Controller& c);
+		GtkPane(Controller& c);
 		virtual ~GtkPane();
 		GtkView& getActiveView();
 	private:

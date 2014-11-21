@@ -7,7 +7,7 @@
 
 using namespace FileB;
 
-GtkView::GtkView(const Controller& c) :
+GtkView::GtkView(Controller& c) :
 		View(c), cols(), tree_model(Gtk::TreeStore::create(cols)), tree(
 				new Gtk::TreeView(tree_model)) {
 	tree->signal_row_activated().connect(
@@ -19,7 +19,7 @@ GtkView::GtkView(const Controller& c) :
 	viewcol_name.set_reorderable();
 	tree->append_column(viewcol_name);
 	viewcol_name.set_cell_data_func(cellrend_name,
-	sigc::mem_fun(this, &GtkView::updateNameCol));
+			sigc::mem_fun(this, &GtkView::updateNameCol));
 
 	viewcol_content.set_title("Type");
 	viewcol_content.pack_start(cellrend_content);
@@ -62,26 +62,6 @@ GtkView::GtkView(const Controller& c) :
 GtkView::~GtkView() {
 }
 
-//void GtkView::showDir(Path path) {
-//	Directory const* dir = FSHandler::instance().listDir(path);
-//	tree_model->clear();
-//	Gtk::TreeModel::Row row;
-//	for(std::vector<File*>::const_iterator i = dir->begin(); i != dir->end();
-//			i++) {
-//		// don't show . or ..
-//		if((*i)->isDot())
-//			continue;
-//		// TODO settings replacement
-//		bool show_hidden = false;
-//		if(!show_hidden && (*i)->isHidden())
-//			continue;
-//		row = *(tree_model->append());
-//		row[cols.name] = *i;
-//	}
-//	// TODO
-//	// vsettings.current_dir = dir;
-//}
-
 void GtkView::showFiles(const std::list<const File*>& files) {
 	tree_model->clear();
 	Gtk::TreeModel::Row row;
@@ -96,12 +76,14 @@ void GtkView::showFiles(const std::list<const File*>& files) {
 		if(!show_hidden && (*i)->isHidden())
 			continue;
 		row = *(tree_model->append());
-		row[cols.name] = (*i)->getName();
+		row.set_value(cols.name, (*i)->getName());
+//		row[cols.name] = (*i)->getName();
 		row[cols.content] = (*i)->getContent();
 		row[cols.size] = (*i)->getSize();
 		row[cols.owner] = (*i)->getOwner();
 		row[cols.group] = (*i)->getGroup();
 		row[cols.mtime] = (*i)->getMTime();
+		row[cols.file] = *i;
 	}
 	// TODO
 	// vsettings.current_dir = dir;
@@ -109,9 +91,11 @@ void GtkView::showFiles(const std::list<const File*>& files) {
 
 void GtkView::onRowActivated(const Gtk::TreeModel::Path& p,
 		Gtk::TreeViewColumn*) {
+	Gtk::TreeModel::Row row = *(tree_model->get_iter(p));
+	controller.onFileActivated(row[cols.file]);
 	//TODO
 //	Gtk::TreeModel::Row row = *(tree_model->get_iter(p));
-//	File const* f = row.get_value(cols.name);
+//	File const* f = row.get_value(cols.path);
 //	Path path = f->getPath();
 //	// if it's a directory, show it
 //	if(dynamic_cast<Directory const*>(f))
@@ -124,6 +108,7 @@ void GtkView::updateNameCol(Gtk::CellRenderer*,
 		const Gtk::TreeModel::iterator& i) {
 	if(i) {
 		std::string name = i->get_value(cols.name);
+//		std::cout << i->get_value(cols.file)->getName() << std::endl;
 		Glib::ustring text = Glib::locale_from_utf8(name);
 		cellrend_name.property_text() = text;
 	}
@@ -198,5 +183,5 @@ void GtkView::updateMTimeCol(Gtk::CellRenderer*,
 }
 
 void GtkView::update() {
-//TODO
+	showFiles(model.getCurrentFiles());
 }

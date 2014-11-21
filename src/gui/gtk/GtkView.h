@@ -13,9 +13,8 @@ class GtkView: public View, public Gtk::Alignment {
 
 		/// ColumnRecord for the TreeView
 		/**
-		 * The name column must always be added because it's the only
-		 * one holding actual data.
-		 * Is there a better way to do this? I want to store files.
+		 * The file column is just here to keep a record of the file. Better
+		 * way?
 		 */
 		class Columns: public Gtk::TreeModel::ColumnRecord {
 			public:
@@ -26,6 +25,7 @@ class GtkView: public View, public Gtk::Alignment {
 					add(owner);
 					add(group);
 					add(mtime);
+					add(file);
 				}
 
 				Gtk::TreeModelColumn<std::string> name;
@@ -34,13 +34,12 @@ class GtkView: public View, public Gtk::Alignment {
 				Gtk::TreeModelColumn<uid_t> owner;
 				Gtk::TreeModelColumn<gid_t> group;
 				Gtk::TreeModelColumn<time_t> mtime;
+				Gtk::TreeModelColumn<const File*> file;
 		};
 
 	public:
-		GtkView(const Controller& c);
+		GtkView(Controller& c);
 		virtual ~GtkView();
-		void showFiles(const std::list<const File*>& files);
-//		void showDir(Path path);
 		void update();
 	private:
 		Columns cols;
@@ -72,6 +71,7 @@ class GtkView: public View, public Gtk::Alignment {
 		/// Signal handler for updating the mtime column.
 		void updateMTimeCol(Gtk::CellRenderer*,
 				const Gtk::TreeModel::iterator& i);
+		void showFiles(const std::list<const File*>& files);
 };
 }
 

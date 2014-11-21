@@ -2,7 +2,8 @@
 
 using namespace FileB;
 
-ViewModel::ViewModel() : current_dir() {
+ViewModel::ViewModel() :
+		current_files() {
 	// TODO Auto-generated constructor stub
 
 }
@@ -11,10 +12,17 @@ ViewModel::~ViewModel() {
 	// TODO Auto-generated destructor stub
 }
 
-const Directory* ViewModel::getCurrentDir() const {
-	return current_dir;
+const std::list<const File*>& ViewModel::getCurrentFiles() const {
+	return current_files;
 }
-//void GtkView::showDir(Path path) {
+
+void ViewModel::showDir(const Directory& dir) {
+	current_files.clear();
+	// TODO there's gotta be a better way than copying. manually.
+	for(Directory::const_iterator i = dir.begin(); i != dir.end(); i++) {
+		current_files.push_back(*i);
+	}
+	notify();
 //	Directory const* dir = FSHandler::instance().listDir(path);
 //	tree_model->clear();
 //	Gtk::TreeModel::Row row;
@@ -32,4 +40,4 @@ const Directory* ViewModel::getCurrentDir() const {
 //	}
 //	// TODO
 //	// vsettings.current_dir = dir;
-//}
+}
