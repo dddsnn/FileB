@@ -34,7 +34,7 @@ class GtkView: public View, public Gtk::Alignment {
 				Gtk::TreeModelColumn<uid_t> owner;
 				Gtk::TreeModelColumn<gid_t> group;
 				Gtk::TreeModelColumn<time_t> mtime;
-				Gtk::TreeModelColumn<const File*> file;
+				Gtk::TreeModelColumn<File*> file;
 		};
 
 	public:
@@ -71,7 +71,7 @@ class GtkView: public View, public Gtk::Alignment {
 		/// Signal handler for updating the mtime column.
 		void updateMTimeCol(Gtk::CellRenderer*,
 				const Gtk::TreeModel::iterator& i);
-		void showFiles(const std::list<const File*>& files);
+		void showFiles(const std::list<File*>& files);
 };
 }
 

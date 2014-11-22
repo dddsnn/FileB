@@ -25,7 +25,7 @@ class View : public Observer {
 	public:
 		virtual ~View();
 		/// Displays a directory in this View.
-		virtual void showFiles(const std::list<const File*>& files) = 0;
+		virtual void showFiles(const std::list<File*>& files) = 0;
 		virtual void update() = 0;
 		ViewModel& getModel();
 

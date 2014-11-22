@@ -23,12 +23,6 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 	grid.attach(addr_bar, 0, 0, 1, 1);
 	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 1, 1);
 
-	// TODO
-//	Directory const* dir = FSHandler::instance().listDir(Path("/home/dddsnn"));
-//	std::list<const File*> files;
-//	for(Directory::const_iterator i = dir->begin(); i!=dir->end(); i++){
-//		files.push_back(*i);
-//	}
 	getActiveView().getModel().showDir(Path("/home/dddsnn"));
 
 	show_all_children();

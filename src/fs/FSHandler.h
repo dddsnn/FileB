@@ -1,5 +1,5 @@
-#ifndef FSHANDLER_H
-#define FSHANDLER_H
+#ifndef SRC_FS_FSHANDLER_H_
+#define SRC_FS_FSHANDLER_H_
 
 #include <list>
 #include <string>
@@ -15,7 +15,7 @@ class FSHandler {
 		/// Returns the instance of this singleton. 
 		static FSHandler& instance();
 		/// Gets the Directory represented by a Path.
-		Directory const* listDir(const Path path);
+		const Directory* listDir(const Path path);
 		/// Matches a user name to a uid.
 		std::string getUserName(uid_t uid) const;
 		/// Matches a group name to a gid.

@@ -13,22 +13,8 @@ using namespace FileB;
 Application::Application(int argc, char *args[]) :
 		gtk_app(
 				Gtk::Application::create(argc, args, Glib::ustring(),
-						Gio::APPLICATION_FLAGS_NONE)), mw(*this) { // :
-	//settings( { false, PREFIX_BASE_2 }), mw(settings) {
-	//settings.show_hidden = false;
-	//settings.prefix = PREFIX_BASE_2;
-//	Gtk::Main kit(argc, args);
-//	Glib::RefPtr<Gtk::Application> gtk_app = Gtk::Application::create(argc,
-//			args, Glib::ustring(), Gio::APPLICATION_FLAGS_NONE);
-//	GtkMainWindow mw(*this);
+						Gio::APPLICATION_FLAGS_NONE)), mw(*this) {
 	mw.fullscreen();
-	//	Directory const* files = FSHandler::instance().listDir(
-	//			Path("/home/dddsnn"));
-	////	for(Directory::const_iterator i = files->begin(); i != files->end(); i++) {
-	////		std::cout << (*i)->getName() << "asdf" << std::endl;
-	////	}
-	//	getActiveView().showFiles(
-	//			*dynamic_cast<const std::list<const File*>*>(files));
 	gtk_app->run(mw);
 }
 
@@ -144,25 +130,11 @@ std::string Application::getHumanReadableTime(time_t time) {
 	return res;
 }
 
-//void Application::openFile(File const* f) {
-//	Path path = f->getPath();
-//// if it's a directory, show it
-//	if(dynamic_cast<Directory const*>(f))
-//		std::cout << "asdf" << std::endl;
-////mw.getActiveView.showDir(f->getPath());
-//	else
-//		std::cout << "opening file " << f->getName() << std::endl;
-//}
-
 void FileB::Application::onFileActivated(const File* f) {
 	// if it's a directory, show it
 	const Directory* dir = dynamic_cast<const Directory*>(f);
 	if(dir) {
-//		std::cout << "asdf" << std::endl;
-//	dynamic_cast<const std::list<const File*>*>(f);
-//	const std::list<const File*>* l = dynamic_cast<const std::list<const File*>*>(f);
 		mw.getActiveView().getModel().showDir(dir->getPath());
-	}
-//	else
-//		std::cout << "opening file " << p << std::endl;
+	} else
+		std::cout << "opening file " << f->getName() << std::endl;
 }

@@ -62,12 +62,12 @@ GtkView::GtkView(Controller& c) :
 GtkView::~GtkView() {
 }
 
-void GtkView::showFiles(const std::list<const File*>& files) {
+void GtkView::showFiles(const std::list<File*>& files) {
 	tree_model->clear();
 	Gtk::TreeModel::Row row;
-	std::list<const File*>::const_iterator j = files.begin();
-	for(std::list<const File*>::const_iterator i = files.begin();
-			i != files.end(); i++) {
+	std::list<File*>::const_iterator j = files.begin();
+	for(std::list<File*>::const_iterator i = files.begin(); i != files.end();
+			i++) {
 		// don't show . or ..
 		if((*i)->isDot())
 			continue;
@@ -92,33 +92,7 @@ void GtkView::showFiles(const std::list<const File*>& files) {
 void GtkView::onRowActivated(const Gtk::TreeModel::Path& p,
 		Gtk::TreeViewColumn*) {
 	Gtk::TreeModel::Row row = *(tree_model->get_iter(p));
-	const File* cf = row.get_value(cols.file);
-	controller.onFileActivated(cf);
-	//TODO
-//	row = *(tree_model->get_iter(p));
-//	const File* cf = row.get_value(cols.file);
-	File* f = const_cast<File*>(cf);
-	Directory* dir = dynamic_cast<Directory*>(f);
-	if(dir) {
-		std::list<File*>* l = dynamic_cast<std::list<File*>*>(dir);
-		if(l) {
-			for(std::list<File*>::iterator i = l->begin();i!=l->end();i++){
-				std::cout << (*i)->getName() << std::endl;
-			}
-			std::cout << "asdf" << std::endl;
-		} else {
-			std::cout << "b" << std::endl;
-		}
-	}
-	//TODO
-//	Gtk::TreeModel::Row row = *(tree_model->get_iter(p));
-//	File const* f = row.get_value(cols.path);
-//	Path path = f->getPath();
-//	// if it's a directory, show it
-//	if(dynamic_cast<Directory const*>(f))
-//		showDir(f->getPath());
-//	else
-//		std::cout << "opening file " << f->getName() << std::endl;
+	controller.onFileActivated(row[cols.file]);
 }
 
 void GtkView::updateNameCol(Gtk::CellRenderer*,
@@ -153,17 +127,18 @@ void GtkView::updateContentCol(Gtk::CellRenderer*,
 void GtkView::updateSizeCol(Gtk::CellRenderer*,
 		const Gtk::TreeModel::iterator& i) {
 	if(i) {
-		off_t size = i->get_value(cols.size);
-// TODO if it's a directory, don't display the size
-//		if(dynamic_cast<Directory const*>(f)) {
-//			cellrend_size.property_text() = "";
-//			return;
-//		}
-// TODO settings replacement
-		int prefix = Application::PREFIX_BASE_2;
-		Glib::ustring text = Glib::locale_to_utf8(
-				Application::getHumanReadableSize(size, prefix));
-		cellrend_size.property_text() = text;
+		File* f = i->get_value(cols.file);
+		off_t size = f->getSize();
+		// if it's a directory, don't display the size
+		if(dynamic_cast<Directory*>(f)) {
+			cellrend_size.property_text() = "";
+		} else {
+			// TODO settings replacement
+			int prefix = Application::PREFIX_BASE_2;
+			Glib::ustring text = Glib::locale_to_utf8(
+					Application::getHumanReadableSize(size, prefix));
+			cellrend_size.property_text() = text;
+		}
 	}
 }
 
@@ -191,8 +166,6 @@ void GtkView::updateMTimeCol(Gtk::CellRenderer*,
 		const Gtk::TreeModel::iterator& i) {
 	if(i) {
 		off_t mtime = i->get_value(cols.mtime);
-//		std::ostringstream s;
-//		s << f->getMTime();
 		Glib::ustring text = Glib::locale_to_utf8(
 				Application::getHumanReadableTime(mtime));
 		cellrend_mtime.property_text() = text;
@@ -200,5 +173,5 @@ void GtkView::updateMTimeCol(Gtk::CellRenderer*,
 }
 
 void GtkView::update() {
-	showFiles(model.getCurrentFiles());
+	showFiles(*model.getCurrentFiles());
 }
