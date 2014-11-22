@@ -21,8 +21,6 @@ namespace FileB {
 		virtual Pane& getActivePane() = 0;
 		/// Returns the currently active View of this window.
 		virtual View& getActiveView() = 0;
-		/// Shows a directory in the active View.
-		virtual void showDir(Path p) = 0;
 	protected:
 		MainWindow(Controller& c);
 		Controller& controller;

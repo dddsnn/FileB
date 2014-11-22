@@ -40,8 +40,3 @@ GtkPane& GtkMainWindow::getActivePane() {
 GtkView& GtkMainWindow::getActiveView() {
 	return getActivePane().getActiveView();
 }
-
-void GtkMainWindow::showDir(Path p) {
-	addr_bar.get_buffer()->set_text(p.getPathString());
-	//TODO getActiveView().showDir(p);
-}
