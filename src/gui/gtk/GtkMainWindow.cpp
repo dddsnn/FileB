@@ -23,7 +23,8 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 	grid.attach(addr_bar, 0, 0, 1, 1);
 	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 1, 1);
 
-	getActiveView().getModel().showDir(Path("/home/dddsnn"));
+	Directory dir(Path("/home/dddsnn"));
+	controller.onFileActivated(&dir); //getActiveView().getModel().showDir(Path("/home/dddsnn"));
 
 	show_all_children();
 }
@@ -39,4 +40,8 @@ GtkPane& GtkMainWindow::getActivePane() {
 
 GtkView& GtkMainWindow::getActiveView() {
 	return getActivePane().getActiveView();
+}
+
+void FileB::GtkMainWindow::update() {
+	addr_bar.get_buffer()->set_text(model.getCurrentPath().getPathString());
 }

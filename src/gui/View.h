@@ -25,12 +25,12 @@ class View : public Observer {
 	public:
 		virtual ~View();
 		/// Displays a directory in this View.
-		virtual void showFiles(const std::list<File*>& files) = 0;
 		virtual void update() = 0;
 		ViewModel& getModel();
 
 	protected:
 		View(Controller& c);
+		virtual void showFiles(const std::list<File*>& files) = 0;
 		Controller& controller;
 //		enum {
 //			ORDER_ASCENDING,

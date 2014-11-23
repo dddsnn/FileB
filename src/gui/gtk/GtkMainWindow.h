@@ -15,6 +15,7 @@ namespace FileB {
 		virtual ~GtkMainWindow();
 		GtkPane& getActivePane();
 		GtkView& getActiveView();
+		void update();
 	private:
         Gtk::Grid grid;
 		Gtk::Entry addr_bar;

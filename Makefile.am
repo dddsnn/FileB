@@ -10,6 +10,7 @@ fileb_SOURCES = \
 	src/fs/FSHandler.cpp \
 	src/fs/Path.cpp \
 	src/gui/MainWindow.cpp \
+	src/gui/MainWindowModel.cpp \
 	src/gui/Pane.cpp \
 	src/gui/View.cpp \
 	src/gui/ViewModel.cpp \

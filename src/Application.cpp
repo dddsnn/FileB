@@ -22,7 +22,6 @@ Application::~Application() {
 }
 
 int main(int argc, char *args[]) {
-	Path p("/home/dddsnn/Dokumente");
 	Application(argc, args);
 	return EXIT_SUCCESS;
 }
@@ -135,6 +134,7 @@ void FileB::Application::onFileActivated(const File* f) {
 	const Directory* dir = dynamic_cast<const Directory*>(f);
 	if(dir) {
 		mw.getActiveView().getModel().showDir(dir->getPath());
+		mw.getModel().showPath(dir->getPath());
 	} else
 		std::cout << "opening file " << f->getName() << std::endl;
 }
