@@ -9,14 +9,14 @@ Directory::Directory() :
 	content = File::CONTENT_DIRECTORY;
 }
 
-Directory::Directory(const Path path) :
+Directory::Directory(const Path& path) :
 	File(path, File::TYPE_DIRECTORY),
 	complete(false)
 {
 	content = File::CONTENT_DIRECTORY;
 }
 
-Directory::Directory(const Directory dir, std::string name) :
+Directory::Directory(const Directory& dir, std::string name) :
 	File(dir, name, File::TYPE_DIRECTORY),
 	complete(false)
 {

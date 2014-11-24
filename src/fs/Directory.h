@@ -13,9 +13,9 @@ class Directory: public File, public std::list<File*> {
 	public:
 		Directory();
 		/// Constructs a Directory from a path string.
-		Directory(const Path path);
+		Directory(const Path& path);
 		/// Constructs a Directory from a Directory and a name.
-		Directory(const Directory dir, std::string name);
+		Directory(const Directory& dir, std::string name);
 		virtual ~Directory();
 		/// Returns whether this Directory has been filled with Files.
 		bool isComplete() const;

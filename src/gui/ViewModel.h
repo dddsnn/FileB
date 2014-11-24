@@ -4,6 +4,8 @@
 #include "../fs/Directory.h"
 #include "../Observable.h"
 
+#include <memory>
+
 namespace FileB {
 
 // TODO do i need a view specific separate representation for File?
@@ -21,11 +23,11 @@ class ViewModel : public Observable {
 	public:
 		ViewModel();
 		virtual ~ViewModel();
-		const std::list<File*>* getCurrentFiles() const;
+		std::shared_ptr<const std::list<File*>> getCurrentFiles() const;
 		void showDir(const Path& path);
 
 	private:
-		const std::list<File*>* current_files;
+		std::shared_ptr<const std::list<File*>> current_files;
 };
 }
 #endif

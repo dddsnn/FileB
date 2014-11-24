@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 #include <dirent.h>
+#include <memory>
 
 #include "File.h"
 #include "Directory.h"
@@ -15,7 +16,7 @@ class FSHandler {
 		/// Returns the instance of this singleton. 
 		static FSHandler& instance();
 		/// Gets the Directory represented by a Path.
-		const Directory* listDir(const Path path);
+		std::shared_ptr<const Directory> listDir(const Path& path);
 		/// Matches a user name to a uid.
 		std::string getUserName(uid_t uid) const;
 		/// Matches a group name to a gid.
@@ -25,8 +26,8 @@ class FSHandler {
 		FSHandler(const FSHandler&);
 		FSHandler& operator=(const FSHandler&);
 		~FSHandler();
-		/// Gets the directory but doesn't fill it with files.
-		Directory* getDir(const Path path);
+//		/// Gets the directory but doesn't fill it with files.
+//		Directory* getDir(const Path path);
 		/// Wrapper for opendir that includes error handling.
 		DIR* safeOpenDir(const Path path);
 		/// Wrapper for closedir that includes error handling.

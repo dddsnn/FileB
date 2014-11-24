@@ -14,9 +14,11 @@
 using namespace FileB;
 
 FSHandler::FSHandler() :
-	root(new Directory()) {}
+		root(new Directory()) {
+}
 
-FSHandler::~FSHandler() {}
+FSHandler::~FSHandler() {
+}
 
 FSHandler* FSHandler::m_instance = 0;
 FSHandler& FSHandler::instance() {
@@ -28,10 +30,11 @@ FSHandler& FSHandler::instance() {
 /**
  * The listed files are not ordered.
  */
-Directory const* FSHandler::listDir(const Path path) {
-	Directory* dir = getDir(path);
-	if(dir->isComplete())
-		return dir;
+std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
+	std::shared_ptr<Directory> dir = std::shared_ptr < Directory
+			> (new Directory(path)); //getDir(path);
+//	if(dir->isComplete())
+//		return dir;
 	DIR* dp;
 	struct dirent64* ep;
 	dp = safeOpenDir(path);
@@ -43,37 +46,37 @@ Directory const* FSHandler::listDir(const Path path) {
 		 * this funcionality is provided by stat, just distinguish
 		 * between files and directories
 		 */
-		#ifdef _DIRENT_HAVE_D_TYPE
+#ifdef _DIRENT_HAVE_D_TYPE
 		if(ep->d_type == DT_DIR)
 			f = new Directory(np);
 		else
 			f = new File(np);
-/*		switch(ep->d_type) {
-		case DT_UNKNOWN:
-			f = new File(np, File::TYPE_UNKNOWN);
-			break;
-		case DT_REG:
-			f = new File(np, File::TYPE_REGULAR);
-			break;
-		case DT_DIR:
-			f = new Directory(np);
-			break;
-		case DT_FIFO:
-			f = new File(np, File::TYPE_FIFO);
-			break;
-		case DT_SOCK:
-			f = new File(np, File::TYPE_SOCKET);
-			break;
-		case DT_CHR:
-			f = new File(np, File::TYPE_CHAR);
-			break;
-		case DT_BLK:
-			f = new File(np, File::TYPE_BLOCK);
-			break;
-		} */
-		#else
+		/*		switch(ep->d_type) {
+		 case DT_UNKNOWN:
+		 f = new File(np, File::TYPE_UNKNOWN);
+		 break;
+		 case DT_REG:
+		 f = new File(np, File::TYPE_REGULAR);
+		 break;
+		 case DT_DIR:
+		 f = new Directory(np);
+		 break;
+		 case DT_FIFO:
+		 f = new File(np, File::TYPE_FIFO);
+		 break;
+		 case DT_SOCK:
+		 f = new File(np, File::TYPE_SOCKET);
+		 break;
+		 case DT_CHR:
+		 f = new File(np, File::TYPE_CHAR);
+		 break;
+		 case DT_BLK:
+		 f = new File(np, File::TYPE_BLOCK);
+		 break;
+		 } */
+#else
 		f = new File(np);
-		#endif
+#endif
 		safeStat(f);
 		dir->push_back(f);
 	}
@@ -82,26 +85,26 @@ Directory const* FSHandler::listDir(const Path path) {
 	return dir;
 }
 
-Directory* FSHandler::getDir(const Path path) {
-	if(path.getDepth() == 0)
-		return root;
-	Directory* parent = getDir(path.getLevel(path.getDepth() - 1));
-	// check if parent already contains the file
-	for(std::list<File*>::iterator i = parent->begin();
-		i != parent->end(); i++)
-		{
-		if(!(*i)->getName().compare(path.getBaseName()))
-			return dynamic_cast<Directory*>(*i);
-	}
-	// check if the requested directory exists
-	DIR* dir = opendir(path.getPathString().c_str());
-	if(!dir)
-		throw std::invalid_argument(path.getPathString());
-	
-	Directory* child = new Directory(*parent, path.getBaseName());
-	parent->push_back(child);
-	return child;
-}
+//Directory* FSHandler::getDir(const Path path) {
+//	if(path.getDepth() == 0)
+//		return root;
+//	Directory* parent = getDir(path.getLevel(path.getDepth() - 1));
+//	// check if parent already contains the file
+//	for(std::list<File*>::iterator i = parent->begin();
+//		i != parent->end(); i++)
+//		{
+//		if(!(*i)->getName().compare(path.getBaseName()))
+//			return dynamic_cast<Directory*>(*i);
+//	}
+//	// check if the requested directory exists
+//	DIR* dir = opendir(path.getPathString().c_str());
+//	if(!dir)
+//		throw std::invalid_argument(path.getPathString());
+//
+//	Directory* child = new Directory(*parent, path.getBaseName());
+//	parent->push_back(child);
+//	return child;
+//}
 
 /**
  * \returns the dirstream of the directory specified by path.
@@ -109,44 +112,42 @@ Directory* FSHandler::getDir(const Path path) {
  */
 DIR* FSHandler::safeOpenDir(const Path path) {
 	DIR* dir = opendir(path.getPathString().c_str());
-	if(!dir){
+	if(!dir) {
 		switch(errno) {
 		case ENAMETOOLONG:
-			std::cerr << "A name in " <<
-				path.getPathString()
-				<< " was too long." << std::endl;
+			std::cerr << "A name in " << path.getPathString()
+					<< " was too long." << std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENOENT:
-			std::cerr << path.getPathString() <<
-				" does not exist." << std::endl;
+			std::cerr << path.getPathString() << " does not exist."
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENOTDIR:
-			std::cerr << path.getPathString() <<
-				" is not a directory." << std::endl;
+			std::cerr << path.getPathString() << " is not a directory."
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ELOOP:
 			std::cerr << "Too many symbolic links were resolved "
-				"while trying to look up " <<
-				path.getPathString() << std::endl;
+					"while trying to look up " << path.getPathString()
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case EACCES:
-			std::cerr << "Read permission denied for " <<
-				path.getPathString()
-				<< ", terminating." << std::endl;
+			std::cerr << "Read permission denied for " << path.getPathString()
+					<< ", terminating." << std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case EMFILE:
 			std::cerr << "Process has too many files open,"
-				" terminating." << std::endl;
+					" terminating." << std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENFILE:
 			std::cerr << "The system cannot open any more files,"
-				" terminating." << std::endl;
+					" terminating." << std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENOMEM:
@@ -160,8 +161,8 @@ DIR* FSHandler::safeOpenDir(const Path path) {
 
 void FSHandler::safeCloseDir(DIR* dir) {
 	if(closedir(dir)) {
-		std::cerr << "Failed to close a directory stream" <<
-			", terminating." << std::endl;
+		std::cerr << "Failed to close a directory stream" << ", terminating."
+				<< std::endl;
 		exit(EXIT_FAILURE);
 	}
 }
@@ -169,34 +170,33 @@ void FSHandler::safeCloseDir(DIR* dir) {
 void FSHandler::safeStat(File* f) {
 	struct stat64 s;
 	if(!stat64(f->getPath().getPathString().c_str(), &s)) {
-		switch(errno){
+		switch(errno) {
 		case ENAMETOOLONG:
-			std::cerr << "A name in " <<
-				f->getPath().getPathString()
-				<< " was too long." << std::endl;
+			std::cerr << "A name in " << f->getPath().getPathString()
+					<< " was too long." << std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENOENT:
-			std::cerr << f->getPath().getPathString() <<
-				" does not exist." << std::endl;
+			std::cerr << f->getPath().getPathString() << " does not exist."
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ENOTDIR:
-			std::cerr << "A directory component in " <<
-				f->getPath().getPathString() <<
-				" is not a directory." << std::endl;
+			std::cerr << "A directory component in "
+					<< f->getPath().getPathString() << " is not a directory."
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case ELOOP:
 			std::cerr << "Too many symbolic links were resolved "
-				"while trying to look up " <<
-				f->getPath().getPathString() << std::endl;
+					"while trying to look up " << f->getPath().getPathString()
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		case EACCES:
-			std::cerr << "Read permission denied for " <<
-				f->getPath().getPathString()
-				<< ", terminating." << std::endl;
+			std::cerr << "Read permission denied for "
+					<< f->getPath().getPathString() << ", terminating."
+					<< std::endl;
 			exit(EXIT_FAILURE);
 			break;
 		}

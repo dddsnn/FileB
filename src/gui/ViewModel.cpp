@@ -13,12 +13,12 @@ ViewModel::~ViewModel() {
 	// TODO Auto-generated destructor stub
 }
 
-const std::list<File*>* ViewModel::getCurrentFiles() const {
+std::shared_ptr<const std::list<File*>> ViewModel::getCurrentFiles() const {
 	return current_files;
 }
 
 void ViewModel::showDir(const Path& path) {
-	const Directory* dir = FSHandler::instance().listDir(path);
+	std::shared_ptr<const Directory> dir = FSHandler::instance().listDir(path);
 	current_files = dir;
 	notify();
 }
