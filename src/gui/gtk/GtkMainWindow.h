@@ -1,5 +1,5 @@
-#ifndef GTKMAINWINDOW_H
-#define GTKMAINWINDOW_H
+#ifndef SRC_GUI_GTK_GTKMAINWINDOW_H_
+#define SRC_GUI_GTK_GTKMAINWINDOW_H_
 
 #include <gtkmm.h>
 
@@ -19,6 +19,7 @@ namespace FileB {
 	private:
         Gtk::Grid grid;
 		Gtk::Entry addr_bar;
+		Gtk::Button btn_up;
 		Glib::RefPtr<Gtk::EntryBuffer> addr_buf;
 	};
 }

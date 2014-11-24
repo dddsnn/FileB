@@ -22,6 +22,7 @@ class Application: public Controller {
 			PREFIX_BASE_10, PREFIX_BASE_2
 		};
 		void onFileActivated(const File* f);
+		void onUpBtnActivated();
 	private:
 		struct Settings settings;
 		Glib::RefPtr<Gtk::Application> gtk_app;

@@ -20,5 +20,10 @@ std::shared_ptr<const std::list<File*>> ViewModel::getCurrentFiles() const {
 void ViewModel::showDir(const Path& path) {
 	std::shared_ptr<const Directory> dir = FSHandler::instance().listDir(path);
 	current_files = dir;
+	current_path = path;
 	notify();
+}
+
+const Path& FileB::ViewModel::getCurrentPath() const {
+	return current_path;
 }

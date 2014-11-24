@@ -8,6 +8,7 @@ namespace FileB {
 	public:
 		virtual ~Controller() {};
 		virtual void onFileActivated(const File* f) = 0;
+		virtual void onUpBtnActivated() = 0;
 	};
 }
 #endif

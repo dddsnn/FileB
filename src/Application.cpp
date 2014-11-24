@@ -138,3 +138,14 @@ void FileB::Application::onFileActivated(const File* f) {
 	} else
 		std::cout << "opening file " << f->getName() << std::endl;
 }
+
+void FileB::Application::onUpBtnActivated() {
+	std::cout << "asdf" << std::endl;
+	Path child = mw.getActiveView().getModel().getCurrentPath();
+	std::cout << "asdf" << std::endl;
+	Path parent = child.getLevel(child.getDepth() - 1);
+	std::cout << child.getPathString() << std::endl;
+	std::cout << parent.getPathString() << std::endl;
+	mw.getActiveView().getModel().showDir(parent);
+	mw.getModel().showPath(parent);
+}

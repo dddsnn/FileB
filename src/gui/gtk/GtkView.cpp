@@ -60,6 +60,7 @@ GtkView::GtkView(Controller& c) :
 }
 
 GtkView::~GtkView() {
+	delete tree;
 }
 
 void GtkView::showFiles(const std::list<File*>& files) {
