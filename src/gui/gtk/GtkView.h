@@ -72,6 +72,19 @@ class GtkView: public View, public Gtk::Alignment {
 		void updateMTimeCol(Gtk::CellRenderer*,
 				const Gtk::TreeModel::iterator& i);
 		void showFiles(const std::list<File*>& files);
+		int compareNames(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		int compareContents(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		int compareSizes(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		int compareOwners(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		int compareGroups(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		int compareMTimes(const Gtk::TreeModel::iterator& a,
+				const Gtk::TreeModel::iterator& b);
+		static int compareInts(int a, int b);
 };
 }
 

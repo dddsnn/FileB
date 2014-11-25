@@ -50,7 +50,8 @@ GtkView& GtkMainWindow::getActiveView() {
 }
 
 void FileB::GtkMainWindow::update() {
-	addr_bar.get_buffer()->set_text(model.getCurrentPath().getPathString());
+	std::string path_string(model.getCurrentPath().getPathString() + "/");
+	addr_bar.get_buffer()->set_text(path_string);
 }
 
 void FileB::GtkMainWindow::onAddrBarActivated() const {

@@ -18,43 +18,63 @@ GtkView::GtkView(Controller& c) :
 	viewcol_name.pack_start(cellrend_name);
 	viewcol_name.set_reorderable();
 	tree->append_column(viewcol_name);
+	viewcol_name.set_sort_column(cols.name);
 	viewcol_name.set_cell_data_func(cellrend_name,
 			sigc::mem_fun(this, &GtkView::updateNameCol));
+	tree_model->set_sort_func(cols.name,
+			sigc::mem_fun(this, &GtkView::compareNames));
 
 	viewcol_content.set_title("Type");
 	viewcol_content.pack_start(cellrend_content);
 	viewcol_content.set_reorderable();
 	tree->append_column(viewcol_content);
+	viewcol_content.set_sort_column(cols.content);
 	viewcol_content.set_cell_data_func(cellrend_content,
 			sigc::mem_fun(this, &GtkView::updateContentCol));
+	tree_model->set_sort_func(cols.content,
+			sigc::mem_fun(this, &GtkView::compareContents));
 
 	viewcol_size.set_title("Size");
 	viewcol_size.pack_start(cellrend_size);
 	viewcol_size.set_reorderable();
 	tree->append_column(viewcol_size);
+	viewcol_size.set_sort_column(cols.size);
 	viewcol_size.set_cell_data_func(cellrend_size,
 			sigc::mem_fun(this, &GtkView::updateSizeCol));
+	tree_model->set_sort_func(cols.size,
+			sigc::mem_fun(this, &GtkView::compareSizes));
 
 	viewcol_owner.set_title("Owner");
 	viewcol_owner.pack_start(cellrend_owner);
 	viewcol_owner.set_reorderable();
 	tree->append_column(viewcol_owner);
+	viewcol_owner.set_sort_column(cols.owner);
 	viewcol_owner.set_cell_data_func(cellrend_owner,
 			sigc::mem_fun(this, &GtkView::updateOwnerCol));
+	tree_model->set_sort_func(cols.owner,
+			sigc::mem_fun(this, &GtkView::compareOwners));
 
 	viewcol_group.set_title("Group");
 	viewcol_group.pack_start(cellrend_group);
 	viewcol_group.set_reorderable();
 	tree->append_column(viewcol_group);
+	viewcol_group.set_sort_column(cols.group);
 	viewcol_group.set_cell_data_func(cellrend_group,
 			sigc::mem_fun(this, &GtkView::updateGroupCol));
+	tree_model->set_sort_func(cols.group,
+			sigc::mem_fun(this, &GtkView::compareGroups));
 
 	viewcol_mtime.set_title("Last modified");
 	viewcol_mtime.pack_start(cellrend_mtime);
 	viewcol_mtime.set_reorderable();
 	tree->append_column(viewcol_mtime);
+	viewcol_mtime.set_sort_column(cols.mtime);
 	viewcol_mtime.set_cell_data_func(cellrend_mtime,
 			sigc::mem_fun(this, &GtkView::updateMTimeCol));
+	tree_model->set_sort_func(cols.mtime,
+			sigc::mem_fun(this, &GtkView::compareMTimes));
+
+//	tree->get_column(0)->set_sort_column(cols.size);
 
 	add(*tree);
 }
@@ -175,4 +195,68 @@ void GtkView::updateMTimeCol(Gtk::CellRenderer*,
 
 void GtkView::update() {
 	showFiles(*model.getCurrentFiles());
+}
+
+int FileB::GtkView::compareNames(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	std::string string_a = a->get_value(cols.name);
+	std::string string_b = b->get_value(cols.name);
+	return string_a.compare(string_b);
+}
+
+int FileB::GtkView::compareContents(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	int content_a = a->get_value(cols.content);
+	int content_b = b->get_value(cols.content);
+	return GtkView::compareInts(content_a, content_b);
+}
+
+int FileB::GtkView::compareSizes(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	int content_a = a->get_value(cols.content);
+	int content_b = b->get_value(cols.content);
+	off_t size_a = a->get_value(cols.size);
+	off_t size_b = b->get_value(cols.size);
+	// sort directories up top, no preference between directories
+	if(content_a == File::CONTENT_DIRECTORY
+			&& content_b == File::CONTENT_DIRECTORY)
+		return 0;
+	else if(content_a == File::CONTENT_DIRECTORY
+			&& content_b != File::CONTENT_DIRECTORY)
+		return -1;
+	else if(content_a != File::CONTENT_DIRECTORY
+			&& content_b == File::CONTENT_DIRECTORY)
+		return 1;
+	else
+		return GtkView::compareInts(size_a, size_b);
+}
+
+int FileB::GtkView::compareOwners(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	uid_t size_a = a->get_value(cols.size);
+	uid_t size_b = b->get_value(cols.size);
+	return GtkView::compareInts(size_a, size_b);
+}
+
+int FileB::GtkView::compareGroups(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	gid_t group_a = a->get_value(cols.group);
+	gid_t group_b = b->get_value(cols.group);
+	return GtkView::compareInts(group_a, group_b);
+}
+
+int FileB::GtkView::compareMTimes(const Gtk::TreeModel::iterator& a,
+		const Gtk::TreeModel::iterator& b) {
+	time_t mtime_a = a->get_value(cols.mtime);
+	time_t mtime_b = b->get_value(cols.mtime);
+	return GtkView::compareInts(mtime_a, mtime_b);
+}
+
+int FileB::GtkView::compareInts(int a, int b) {
+	if(a < b)
+		return -1;
+	else if(a == b)
+		return 0;
+	else
+		return 1;
 }
