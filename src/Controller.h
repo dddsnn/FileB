@@ -4,11 +4,14 @@
 #include "fs/File.h"
 
 namespace FileB {
-	class Controller {
+class Controller {
 	public:
-		virtual ~Controller() {};
+		virtual ~Controller() {
+		}
+		;
 		virtual void onFileActivated(const File* f) = 0;
 		virtual void onUpBtnActivated() = 0;
-	};
+		virtual void onPathActivated(const Path& path)=0;
+};
 }
 #endif

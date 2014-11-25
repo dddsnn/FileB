@@ -16,11 +16,11 @@ namespace FileB {
 		GtkPane& getActivePane();
 		GtkView& getActiveView();
 		void update();
+		void onAddrBarActivated() const;
 	private:
         Gtk::Grid grid;
 		Gtk::Entry addr_bar;
 		Gtk::Button btn_up;
-		Glib::RefPtr<Gtk::EntryBuffer> addr_buf;
 	};
 }
 

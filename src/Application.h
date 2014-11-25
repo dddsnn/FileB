@@ -23,6 +23,7 @@ class Application: public Controller {
 		};
 		void onFileActivated(const File* f);
 		void onUpBtnActivated();
+		void onPathActivated(const Path& path);
 	private:
 		struct Settings settings;
 		Glib::RefPtr<Gtk::Application> gtk_app;

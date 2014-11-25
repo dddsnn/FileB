@@ -12,10 +12,8 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 		MainWindow(c), btn_up(Glib::ustring("Up")) {
 	panes.push_back(new GtkPane(controller));
 	act_pane = panes[0];
-	addr_buf = Gtk::EntryBuffer::create();
 	// make the widgets take up all available space
 	addr_bar.set_hexpand();
-	btn_up.set_hexpand();
 	for(std::vector<Pane*>::iterator i = panes.begin(); i != panes.end(); i++) {
 		dynamic_cast<GtkPane*>(*i)->set_vexpand();
 	}
@@ -23,6 +21,8 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 	// signal handlers
 	btn_up.signal_clicked().connect(
 			sigc::mem_fun(&controller, &Controller::onUpBtnActivated));
+	addr_bar.signal_activate().connect(
+			sigc::mem_fun(this, &GtkMainWindow::onAddrBarActivated));
 
 	// add and fill grid
 	add(grid);
@@ -51,4 +51,9 @@ GtkView& GtkMainWindow::getActiveView() {
 
 void FileB::GtkMainWindow::update() {
 	addr_bar.get_buffer()->set_text(model.getCurrentPath().getPathString());
+}
+
+void FileB::GtkMainWindow::onAddrBarActivated() const {
+	Path path(addr_bar.get_buffer()->get_text().raw());
+	controller.onPathActivated(path);
 }
