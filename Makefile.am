@@ -7,6 +7,7 @@ fileb_SOURCES = \
 	src/Observer.cpp \
 	src/fs/Directory.cpp \
 	src/fs/File.cpp \
+	src/fs/FSException.cpp \
 	src/fs/FSHandler.cpp \
 	src/fs/Path.cpp \
 	src/gui/MainWindow.cpp \

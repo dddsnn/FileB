@@ -1,5 +1,6 @@
 #include "FSHandler.h"
 #include "../Application.h"
+#include "FSException.h"
 
 #include <dirent.h>
 #include <iostream>
@@ -31,13 +32,15 @@ FSHandler& FSHandler::instance() {
  * The listed files are not ordered.
  */
 std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
-	std::shared_ptr<Directory> dir = std::shared_ptr < Directory
-			> (new Directory(path)); //getDir(path);
-//	if(dir->isComplete())
-//		return dir;
+	std::shared_ptr<Directory> dir = std::shared_ptr<Directory>(
+			new Directory(path));
 	DIR* dp;
 	struct dirent64* ep;
-	dp = safeOpenDir(path);
+	try {
+		dp = safeOpenDir(path);
+	} catch(FSException&) {
+		throw;
+	}
 	while((ep = readdir64(dp))) {
 		Path np(path);
 		np.append(std::string(ep->d_name));
@@ -115,44 +118,31 @@ DIR* FSHandler::safeOpenDir(const Path path) {
 	if(!dir) {
 		switch(errno) {
 		case ENAMETOOLONG:
-			std::cerr << "A name in " << path.getPathString()
-					<< " was too long." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(
+					"A name in " + path.getPathString() + " was too long.");
 			break;
 		case ENOENT:
-			std::cerr << path.getPathString() << " does not exist."
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(path.getPathString() + " does not exist.");
 			break;
 		case ENOTDIR:
-			std::cerr << path.getPathString() << " is not a directory."
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(path.getPathString() + " is not a directory.");
 			break;
 		case ELOOP:
-			std::cerr << "Too many symbolic links were resolved "
-					"while trying to look up " << path.getPathString()
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException("Too many symbolic links were resolved "
+					"while trying to look up " + path.getPathString());
 			break;
 		case EACCES:
-			std::cerr << "Read permission denied for " << path.getPathString()
-					<< ", terminating." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(
+					"Read permission denied for " + path.getPathString());
 			break;
 		case EMFILE:
-			std::cerr << "Process has too many files open,"
-					" terminating." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException("Process has too many files open");
 			break;
 		case ENFILE:
-			std::cerr << "The system cannot open any more files,"
-					" terminating." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException("The system cannot open any more files");
 			break;
 		case ENOMEM:
-			std::cerr << "Out of memory, terminating." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException("Out of memory");
 			break;
 		}
 	}

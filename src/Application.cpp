@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "fs/Path.h"
 #include "fs/FSHandler.h"
+#include "fs/FSException.h"
 
 #include <gtkmm.h>
 #include <iostream>
@@ -129,12 +130,19 @@ std::string Application::getHumanReadableTime(time_t time) {
 	return res;
 }
 
+//TODO copy code
 void FileB::Application::onFileActivated(const File* f) {
 	// if it's a directory, show it
 	const Directory* dir = dynamic_cast<const Directory*>(f);
 	if(dir) {
-		mw.getActiveView().getModel().showDir(dir->getPath());
-		mw.getModel().showPath(dir->getPath());
+		try {
+			mw.getActiveView().getModel().showDir(dir->getPath());
+			mw.getModel().showPath(dir->getPath());
+		} catch(FSException& e) {
+			Gtk::MessageDialog dialog(
+					Glib::locale_to_utf8(std::string(e.what())));
+			dialog.run();
+		}
 	} else
 		std::cout << "opening file " << f->getName() << std::endl;
 }
@@ -142,11 +150,21 @@ void FileB::Application::onFileActivated(const File* f) {
 void FileB::Application::onUpBtnActivated() {
 	Path child = mw.getActiveView().getModel().getCurrentPath();
 	Path parent = child.getLevel(child.getDepth() - 1);
-	mw.getActiveView().getModel().showDir(parent);
-	mw.getModel().showPath(parent);
+	try {
+		mw.getActiveView().getModel().showDir(parent);
+		mw.getModel().showPath(parent);
+	} catch(FSException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	}
 }
 
 void FileB::Application::onPathActivated(const Path& path) {
-	mw.getActiveView().getModel().showDir(path);
-	mw.getModel().showPath(path);
+	try {
+		mw.getActiveView().getModel().showDir(path);
+		mw.getModel().showPath(path);
+	} catch(FSException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	}
 }

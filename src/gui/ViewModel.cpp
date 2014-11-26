@@ -1,5 +1,6 @@
 #include "ViewModel.h"
 #include "../fs/FSHandler.h"
+#include "../fs/FSException.h"
 
 using namespace FileB;
 
@@ -18,7 +19,13 @@ std::shared_ptr<const std::list<File*>> ViewModel::getCurrentFiles() const {
 }
 
 void ViewModel::showDir(const Path& path) {
-	std::shared_ptr<const Directory> dir = FSHandler::instance().listDir(path);
+	std::shared_ptr<const Directory> dir;
+	try {
+		dir = FSHandler::instance().listDir(
+				path);
+	} catch(FSException) {
+		throw;
+	}
 	current_files = dir;
 	current_path = path;
 	notify();
