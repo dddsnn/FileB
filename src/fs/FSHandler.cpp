@@ -14,8 +14,7 @@
 
 using namespace FileB;
 
-FSHandler::FSHandler() :
-		root(new Directory()) {
+FSHandler::FSHandler() {
 }
 
 FSHandler::~FSHandler() {
@@ -80,34 +79,21 @@ std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
 #else
 		f = new File(np);
 #endif
-		safeStat(f);
+		try {
+			safeStat(f);
+		} catch(FSException&) {
+			throw;
+		}
 		dir->push_back(f);
 	}
-	safeCloseDir(dp);
+	try {
+		safeCloseDir(dp);
+	} catch(FSException&) {
+		throw;
+	}
 	dir->markComplete();
 	return dir;
 }
-
-//Directory* FSHandler::getDir(const Path path) {
-//	if(path.getDepth() == 0)
-//		return root;
-//	Directory* parent = getDir(path.getLevel(path.getDepth() - 1));
-//	// check if parent already contains the file
-//	for(std::list<File*>::iterator i = parent->begin();
-//		i != parent->end(); i++)
-//		{
-//		if(!(*i)->getName().compare(path.getBaseName()))
-//			return dynamic_cast<Directory*>(*i);
-//	}
-//	// check if the requested directory exists
-//	DIR* dir = opendir(path.getPathString().c_str());
-//	if(!dir)
-//		throw std::invalid_argument(path.getPathString());
-//
-//	Directory* child = new Directory(*parent, path.getBaseName());
-//	parent->push_back(child);
-//	return child;
-//}
 
 /**
  * \returns the dirstream of the directory specified by path.
@@ -151,9 +137,7 @@ DIR* FSHandler::safeOpenDir(const Path path) {
 
 void FSHandler::safeCloseDir(DIR* dir) {
 	if(closedir(dir)) {
-		std::cerr << "Failed to close a directory stream" << ", terminating."
-				<< std::endl;
-		exit(EXIT_FAILURE);
+		throw FSException("Failed to close a directory stream.");
 	}
 }
 
@@ -162,31 +146,27 @@ void FSHandler::safeStat(File* f) {
 	if(!stat64(f->getPath().getPathString().c_str(), &s)) {
 		switch(errno) {
 		case ENAMETOOLONG:
-			std::cerr << "A name in " << f->getPath().getPathString()
-					<< " was too long." << std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(
+					"A name in " + f->getPath().getPathString()
+							+ " was too long.");
 			break;
 		case ENOENT:
-			std::cerr << f->getPath().getPathString() << " does not exist."
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(
+					f->getPath().getPathString() + " does not exist.");
 			break;
 		case ENOTDIR:
-			std::cerr << "A directory component in "
-					<< f->getPath().getPathString() << " is not a directory."
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException(
+					"A directory component in " + f->getPath().getPathString()
+							+ " is not a directory.");
 			break;
 		case ELOOP:
-			std::cerr << "Too many symbolic links were resolved "
-					"while trying to look up " << f->getPath().getPathString()
-					<< std::endl;
-			exit(EXIT_FAILURE);
+			throw FSException("Too many symbolic links were resolved "
+					"while trying to look up " + f->getPath().getPathString());
 			break;
 		case EACCES:
-			std::cerr << "Read permission denied for "
-					<< f->getPath().getPathString() << ", terminating."
-					<< std::endl;
+			throw FSException(
+					"Read permission denied for "
+							+ f->getPath().getPathString());
 			exit(EXIT_FAILURE);
 			break;
 		}

@@ -35,7 +35,6 @@ class FSHandler {
 		/// Fills f with file information.
 		void safeStat(File* f);
 		static FSHandler* m_instance;
-		Directory* root;
 };
 }
 
