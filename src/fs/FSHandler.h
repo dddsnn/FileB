@@ -32,8 +32,8 @@ class FSHandler {
 		DIR* safeOpenDir(const Path path);
 		/// Wrapper for closedir that includes error handling.
 		void safeCloseDir(DIR* dir);
-		/// Fills f with file information.
-		void safeStat(File* f);
+		/// Read file system information about a file.
+		File* statFile(const Path& path);
 		static FSHandler* m_instance;
 };
 }
