@@ -27,6 +27,7 @@ class Application: public Controller {
 	private:
 		struct Settings settings;
 		Glib::RefPtr<Gtk::Application> gtk_app;
+		Model model;
 		GtkMainWindow mw;
 };
 }

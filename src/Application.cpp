@@ -2,6 +2,7 @@
 #include "fs/Path.h"
 #include "fs/FSHandler.h"
 #include "fs/FSException.h"
+#include "gui/gtk/GtkPane.h"
 
 #include <gtkmm.h>
 #include <iostream>
@@ -14,7 +15,12 @@ using namespace FileB;
 Application::Application(int argc, char *args[]) :
 		gtk_app(
 				Gtk::Application::create(argc, args, Glib::ustring(),
-						Gio::APPLICATION_FLAGS_NONE)), mw(*this) {
+						Gio::APPLICATION_FLAGS_NONE)), model(), mw(*this, model) {
+	int pane_id = Pane::newPaneGUID();
+	mw.addPane(new GtkPane(*this, pane_id), pane_id);
+	int view_id = View::newViewGUID();
+	ViewModel view_model;
+	mw.addView(new GtkView(*this, view_model, view_id), pane_id, view_id);
 	mw.fullscreen();
 	gtk_app->run(mw);
 }
@@ -133,38 +139,38 @@ std::string Application::getHumanReadableTime(time_t time) {
 //TODO copy code
 void FileB::Application::onFileActivated(const File* f) {
 	// if it's a directory, show it
-	const Directory* dir = dynamic_cast<const Directory*>(f);
-	if(dir) {
-		try {
-			mw.getActiveView().getModel().showDir(dir->getPath());
-			mw.getModel().showPath(dir->getPath());
-		} catch(FSException& e) {
-			Gtk::MessageDialog dialog(
-					Glib::locale_to_utf8(std::string(e.what())));
-			dialog.run();
-		}
-	} else
-		std::cout << "opening file " << f->getName() << std::endl;
+//	const Directory* dir = dynamic_cast<const Directory*>(f);
+//	if(dir) {
+//		try {
+//			mw.getActiveView().getModel().showPath(dir->getPath());
+//			mw.getModel().showPath(dir->getPath());
+//		} catch(FSException& e) {
+//			Gtk::MessageDialog dialog(
+//					Glib::locale_to_utf8(std::string(e.what())));
+//			dialog.run();
+//		}
+//	} else
+//		std::cout << "opening file " << f->getName() << std::endl;
 }
 
 void FileB::Application::onUpBtnActivated() {
-	Path child = mw.getActiveView().getModel().getCurrentPath();
-	Path parent = child.getLevel(child.getDepth() - 1);
-	try {
-		mw.getActiveView().getModel().showDir(parent);
-		mw.getModel().showPath(parent);
-	} catch(FSException& e) {
-		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
-		dialog.run();
-	}
+//	Path child = mw.getActiveView().getModel().getCurrentPath();
+//	Path parent = child.getLevel(child.getDepth() - 1);
+//	try {
+//		mw.getActiveView().getModel().showPath(parent);
+//		mw.getModel().showPath(parent);
+//	} catch(FSException& e) {
+//		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+//		dialog.run();
+//	}
 }
 
 void FileB::Application::onPathActivated(const Path& path) {
-	try {
-		mw.getActiveView().getModel().showDir(path);
-		mw.getModel().showPath(path);
-	} catch(FSException& e) {
-		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
-		dialog.run();
-	}
+//	try {
+//		mw.getActiveView().getModel().showPath(path);
+//		mw.getModel().showPath(path);
+//	} catch(FSException& e) {
+//		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+//		dialog.run();
+//	}
 }

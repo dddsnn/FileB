@@ -24,7 +24,7 @@ class ViewModel : public Observable {
 		ViewModel();
 		virtual ~ViewModel();
 		std::shared_ptr<const std::list<File*>> getCurrentFiles() const;
-		void showDir(const Path& path);
+		void showPath(const Path& path);
 		const Path& getCurrentPath() const;
 
 	private:

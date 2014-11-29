@@ -38,7 +38,7 @@ class GtkView: public View, public Gtk::Alignment {
 		};
 
 	public:
-		GtkView(Controller& c);
+		GtkView(Controller& c, ViewModel& model, int id);
 		virtual ~GtkView();
 		void update();
 	private:

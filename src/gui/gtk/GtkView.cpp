@@ -7,8 +7,8 @@
 
 using namespace FileB;
 
-GtkView::GtkView(Controller& c) :
-		View(c), cols(), tree_model(Gtk::TreeStore::create(cols)), tree(
+GtkView::GtkView(Controller& c, ViewModel& model, int id) :
+		View(c, model, id), cols(), tree_model(Gtk::TreeStore::create(cols)), tree(
 				new Gtk::TreeView(tree_model)) {
 	tree->signal_row_activated().connect(
 			sigc::mem_fun(this, &GtkView::onRowActivated));

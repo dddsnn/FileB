@@ -21,17 +21,20 @@ namespace FileB {
  * This class should be subclassed implementing an actual window with
  * a specific toolkit.
  */
-class View : public Observer {
+class View: public Observer {
 	public:
 		virtual ~View();
 		/// Displays a directory in this View.
 		virtual void update() = 0;
 		ViewModel& getModel();
+		static int newViewGUID();
+		int getId() const;
 
 	protected:
-		View(Controller& c);
+		View(Controller& c, ViewModel& model, int id);
 		virtual void showFiles(const std::list<File*>& files) = 0;
 		Controller& controller;
+		const int id;
 //		enum {
 //			ORDER_ASCENDING,
 //			ORDER_DESCENDING,
@@ -39,7 +42,10 @@ class View : public Observer {
 //			COLUMN_TYPE,
 //			COLUMN_SIZE
 //		};
-		ViewModel model;
+		ViewModel& model;
+
+	private:
+		static int last_id;
 };
 }
 

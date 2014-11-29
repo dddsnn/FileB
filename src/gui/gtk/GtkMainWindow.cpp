@@ -8,15 +8,15 @@
 
 using namespace FileB;
 
-GtkMainWindow::GtkMainWindow(Controller& c) :
-		MainWindow(c), btn_up(Glib::ustring("Up")) {
-	panes.push_back(new GtkPane(controller));
-	act_pane = panes[0];
+GtkMainWindow::GtkMainWindow(Controller& c, Model& model) :
+		MainWindow(c, model), btn_up(Glib::ustring("Up")) {
+//	panes.push_back(new GtkPane(controller));
+//	act_pane = panes[0];
 	// make the widgets take up all available space
 	addr_bar.set_hexpand();
-	for(std::vector<Pane*>::iterator i = panes.begin(); i != panes.end(); i++) {
-		dynamic_cast<GtkPane*>(*i)->set_vexpand();
-	}
+//	for(std::vector<Pane*>::iterator i = panes.begin(); i != panes.end(); i++) {
+//		dynamic_cast<GtkPane*>(*i)->set_vexpand();
+//	}
 
 	// signal handlers
 	btn_up.signal_clicked().connect(
@@ -27,7 +27,7 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 	// add and fill grid
 	add(grid);
 	grid.attach(addr_bar, 1, 0, 1, 1);
-	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 2, 1);
+//	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 2, 1);
 	grid.attach(btn_up, 0, 0, 1, 1);
 
 	Directory dir(Path("/home/dddsnn"));
@@ -37,16 +37,6 @@ GtkMainWindow::GtkMainWindow(Controller& c) :
 }
 
 GtkMainWindow::~GtkMainWindow() {
-	for(std::vector<Pane*>::iterator i = panes.begin(); i != panes.end(); i++)
-		delete *i;
-}
-
-GtkPane& GtkMainWindow::getActivePane() {
-	return *dynamic_cast<GtkPane*>(act_pane);
-}
-
-GtkView& GtkMainWindow::getActiveView() {
-	return getActivePane().getActiveView();
 }
 
 void FileB::GtkMainWindow::update() {
@@ -57,4 +47,19 @@ void FileB::GtkMainWindow::update() {
 void FileB::GtkMainWindow::onAddrBarActivated() const {
 	Path path(addr_bar.get_buffer()->get_text().raw());
 	controller.onPathActivated(path);
+}
+
+void FileB::GtkMainWindow::addPane(GtkPane* pane, int pane_id) {
+	MainWindow::addPane(pane, pane_id);
+	grid.attach(*pane, 0, 1, 2, 1);
+}
+
+void FileB::GtkMainWindow::addView(GtkView* view, int pane_id, int view_id) {
+	GtkPane* pane;
+	try {
+		pane = dynamic_cast<GtkPane*>(panes[pane_id]);
+	} catch(std::out_of_range&) {
+		throw;
+	}
+	pane->addView(view, view_id);
 }

@@ -1,5 +1,5 @@
-#ifndef GTKPANE_H
-#define GTKPANE_H
+#ifndef SRC_GUI_GTK_GTKPANE_H_
+#define SRC_GUI_GTK_GTKPANE_H_
 
 #include <gtkmm.h>
 
@@ -10,10 +10,9 @@ namespace FileB {
 /// Pane using the Gtk+ toolkit.
 class GtkPane: public Pane, public Gtk::Alignment {
 	public:
-		GtkPane(Controller& c);
+		GtkPane(Controller& c, int id);
 		virtual ~GtkPane();
-		GtkView& getActiveView();
-	private:
+		void addView(GtkView* view, int id);
 };
 }
 

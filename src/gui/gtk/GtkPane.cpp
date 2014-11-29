@@ -5,18 +5,13 @@
 
 using namespace FileB;
 
-GtkPane::GtkPane(Controller& c) :
-		Pane(c) {
-	views.push_back(new GtkView(controller));
-	act_view = views[0];
-	add(*(dynamic_cast<GtkView*>(views[0])));
+GtkPane::GtkPane(Controller& c, int id) :
+		Pane(c, id) {
 }
 
 GtkPane::~GtkPane() {
-	for(std::vector<View*>::iterator i = views.begin(); i != views.end(); i++)
-		delete *i;
 }
-
-GtkView& GtkPane::getActiveView() {
-	return *dynamic_cast<GtkView*>(act_view);
+void FileB::GtkPane::addView(GtkView* view, int id) {
+	Pane::addView(view, id);
+	add(*view);
 }

@@ -27,6 +27,9 @@ FSHandler& FSHandler::instance() {
 	return *m_instance;
 }
 
+// TODO memory leaks cause directory contents aren't deleted (also make
+// shared_ptr)
+
 /**
  * The listed files are not ordered.
  */
