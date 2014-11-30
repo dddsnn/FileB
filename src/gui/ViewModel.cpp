@@ -21,8 +21,7 @@ std::shared_ptr<const std::list<File*>> ViewModel::getCurrentFiles() const {
 void ViewModel::showPath(const Path& path) {
 	std::shared_ptr<const Directory> dir;
 	try {
-		dir = FSHandler::instance().listDir(
-				path);
+		dir = FSHandler::instance().listDir(path);
 	} catch(FSException&) {
 		throw;
 	}

@@ -26,7 +26,6 @@ class View: public Observer {
 		virtual ~View();
 		/// Displays a directory in this View.
 		virtual void update() = 0;
-		ViewModel& getModel();
 		static int newViewGUID();
 		int getId() const;
 

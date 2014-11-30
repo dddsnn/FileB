@@ -26,7 +26,6 @@ class MainWindow: public Observer {
 		MainWindow(Controller& c, Model& model);
 		Controller& controller;
 		std::map<int, Pane*> panes;
-		int active_pane_id;
 		Model& model;
 };
 }

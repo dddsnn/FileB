@@ -17,6 +17,7 @@ class Model: public Observable {
 		void addViewModel(int id, ViewModel* view_model);
 
 	private:
+		int active_view_id;
 		std::map<int, ViewModel*> view_models;
 		Path current_path;
 };

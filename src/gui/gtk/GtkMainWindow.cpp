@@ -27,11 +27,11 @@ GtkMainWindow::GtkMainWindow(Controller& c, Model& model) :
 	// add and fill grid
 	add(grid);
 	grid.attach(addr_bar, 1, 0, 1, 1);
-//	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 2, 1);
 	grid.attach(btn_up, 0, 0, 1, 1);
+//	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 2, 1);
 
-	Directory dir(Path("/home/dddsnn"));
-	controller.onFileActivated(&dir); //getActiveView().getModel().showDir(Path("/home/dddsnn"));
+//	Directory dir(Path("/home/dddsnn"));
+//	controller.onFileActivated(&dir); //getActiveView().getModel().showDir(Path("/home/dddsnn"));
 
 	show_all_children();
 }
@@ -40,7 +40,10 @@ GtkMainWindow::~GtkMainWindow() {
 }
 
 void FileB::GtkMainWindow::update() {
-	std::string path_string(model.getCurrentPath().getPathString() + "/");
+	std::string path_string(model.getCurrentPath().getPathString());
+	// append a trailing slash unless root
+	if(path_string != "/")
+		path_string += "/";
 	addr_bar.get_buffer()->set_text(path_string);
 }
 
@@ -52,6 +55,7 @@ void FileB::GtkMainWindow::onAddrBarActivated() const {
 void FileB::GtkMainWindow::addPane(GtkPane* pane, int pane_id) {
 	MainWindow::addPane(pane, pane_id);
 	grid.attach(*pane, 0, 1, 2, 1);
+	show_all_children();
 }
 
 void FileB::GtkMainWindow::addView(GtkView* view, int pane_id, int view_id) {
@@ -62,4 +66,5 @@ void FileB::GtkMainWindow::addView(GtkView* view, int pane_id, int view_id) {
 		throw;
 	}
 	pane->addView(view, view_id);
+	show_all_children();
 }

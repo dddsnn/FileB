@@ -19,7 +19,7 @@ namespace FileB {
 //		time_t mtime;
 //};
 
-class ViewModel : public Observable {
+class ViewModel: public Observable {
 	public:
 		ViewModel();
 		virtual ~ViewModel();

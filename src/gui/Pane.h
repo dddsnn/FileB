@@ -26,7 +26,6 @@ class Pane {
 		Pane(Controller& c, int id);
 		Controller& controller;
 		std::map<int, View*> views;
-		int active_view_id;
 		int id;
 
 	private:

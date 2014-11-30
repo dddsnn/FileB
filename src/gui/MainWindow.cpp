@@ -3,9 +3,10 @@
 using namespace FileB;
 
 MainWindow::MainWindow(Controller& c, Model& model) :
+		Observer(dynamic_cast<Observable*>(&model)),
 		//TODO active id -1 is ugly
-		controller(c), panes(), active_pane_id(-1), model(model) {
-	observe(dynamic_cast<Observable*>(&model));
+		controller(c), panes(), model(model) {
+//	observe(dynamic_cast<Observable*>(&model));
 }
 
 MainWindow::~MainWindow() {
@@ -15,8 +16,6 @@ MainWindow::~MainWindow() {
 
 void FileB::MainWindow::addPane(Pane* pane, int pane_id) {
 	panes[pane_id] = pane;
-	if(active_pane_id == -1)
-		active_pane_id = pane_id;
 }
 
 void FileB::MainWindow::addView(View* view, int pane_id, int view_id) {
