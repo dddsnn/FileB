@@ -74,8 +74,8 @@ GtkView::GtkView(Controller& c, ViewModel& model, int id) :
 	tree_model->set_sort_func(cols.mtime,
 			sigc::mem_fun(this, &GtkView::compareMTimes));
 
-//	tree->get_column(0)->set_sort_column(cols.size);
-
+	set_hexpand();
+	set_vexpand();
 	add(*tree);
 }
 

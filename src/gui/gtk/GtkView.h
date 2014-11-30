@@ -9,7 +9,7 @@
 
 namespace FileB {
 /// View using the Gtk+ toolkit.
-class GtkView: public View, public Gtk::Alignment {
+class GtkView: public View, public Gtk::ScrolledWindow {
 
 		/// ColumnRecord for the TreeView
 		/**
