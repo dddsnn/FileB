@@ -5,7 +5,7 @@
 
 #include "../Controller.h"
 #include "../globals.h"
-#include "Model.h"
+#include "../model/Model.h"
 #include "Pane.h"
 
 namespace FileB {

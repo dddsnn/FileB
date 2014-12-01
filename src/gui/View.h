@@ -7,7 +7,7 @@
 #include "../globals.h"
 #include "../Controller.h"
 #include "../fs/Path.h"
-#include "ViewModel.h"
+#include "../model/ViewModel.h"
 #include "../Observer.h"
 
 namespace FileB {
