@@ -5,8 +5,8 @@ using namespace FileB;
 int View::last_id = 0;
 
 View::View(Controller& c, ViewModel& model, int id) :
-		Observer(dynamic_cast<Observable*>(&model)), controller(c), model(
-				model), id(id) {
+		Observer(dynamic_cast<Observable*>(&model)), id(id), controller(c), model(
+				model) {
 //	vsettings.current_dir;
 //	observe(dynamic_cast<Observable*>(&model));
 }

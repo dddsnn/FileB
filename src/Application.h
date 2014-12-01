@@ -22,6 +22,8 @@ class Application: public Controller {
 			PREFIX_BASE_10, PREFIX_BASE_2
 		};
 		void onFileActivated(const File* f);
+		void onBackBtnActivated();
+		void onForwardBtnActivated();
 		void onUpBtnActivated();
 		void onPathActivated(const Path& path);
 	private:

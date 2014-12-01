@@ -20,7 +20,7 @@ class GtkMainWindow: public MainWindow, public Gtk::ApplicationWindow {
 	private:
 		Gtk::Grid grid;
 		Gtk::Entry addr_bar;
-		Gtk::Button btn_up;
+		Gtk::Button btn_up, btn_back, btn_forward;
 };
 }
 

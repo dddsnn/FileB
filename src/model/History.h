@@ -6,18 +6,23 @@
 #include <deque>
 
 #include "../fs/Path.h"
+#include "HistoryException.h"
 
 namespace FileB {
 class History {
 	public:
-		History();
+		History(const Path& path);
 		virtual ~History();
 		void addEntry(const Path& path);
 		const Path& goBack();
+		const Path& goForward();
+		const Path& getCurrentPath() const;
+		unsigned int getBackDepth();
+		unsigned int getForwardDepth();
 
 	private:
 		std::deque<Path> history;
-		int back_steps;
+		unsigned int back_steps;
 };
 }
 #endif

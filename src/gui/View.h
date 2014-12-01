@@ -32,8 +32,9 @@ class View: public Observer {
 	protected:
 		View(Controller& c, ViewModel& model, int id);
 		virtual void showFiles(const std::list<File*>& files) = 0;
-		Controller& controller;
 		const int id;
+		Controller& controller;
+		ViewModel& model;
 //		enum {
 //			ORDER_ASCENDING,
 //			ORDER_DESCENDING,
@@ -41,7 +42,6 @@ class View: public Observer {
 //			COLUMN_TYPE,
 //			COLUMN_SIZE
 //		};
-		ViewModel& model;
 
 	private:
 		static int last_id;

@@ -146,7 +146,7 @@ void FileB::Application::onFileActivated(const File* f) {
 	const Directory* dir = dynamic_cast<const Directory*>(f);
 	if(dir) {
 		try {
-			model.showPath(dir->getPath());
+			model.activatePath(dir->getPath());
 		} catch(FSException& e) {
 			Gtk::MessageDialog dialog(
 					Glib::locale_to_utf8(std::string(e.what())));
@@ -156,11 +156,35 @@ void FileB::Application::onFileActivated(const File* f) {
 		std::cout << "opening file " << f->getName() << std::endl;
 }
 
+void FileB::Application::onBackBtnActivated() {
+	try {
+		model.showPreviousPath();
+	} catch(FSException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	} catch(HistoryException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	}
+}
+
+void FileB::Application::onForwardBtnActivated() {
+	try {
+		model.showNextPath();
+	} catch(FSException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	} catch(HistoryException& e) {
+		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
+		dialog.run();
+	}
+}
+
 void FileB::Application::onUpBtnActivated() {
 	Path child = model.getCurrentPath();
 	Path parent = child.getLevel(child.getDepth() - 1);
 	try {
-		model.showPath(parent);
+		model.activatePath(parent);
 	} catch(FSException& e) {
 		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
 		dialog.run();
@@ -169,7 +193,7 @@ void FileB::Application::onUpBtnActivated() {
 
 void FileB::Application::onPathActivated(const Path& path) {
 	try {
-		model.showPath(path);
+		model.activatePath(path);
 	} catch(FSException& e) {
 		Gtk::MessageDialog dialog(Glib::locale_to_utf8(std::string(e.what())));
 		dialog.run();

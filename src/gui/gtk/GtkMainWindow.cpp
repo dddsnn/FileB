@@ -9,7 +9,8 @@
 using namespace FileB;
 
 GtkMainWindow::GtkMainWindow(Controller& c, Model& model) :
-		MainWindow(c, model), btn_up(Glib::ustring("Up")) {
+		MainWindow(c, model), btn_up("Up"), btn_back("Back"), btn_forward(
+				"Forward") {
 //	panes.push_back(new GtkPane(controller));
 //	act_pane = panes[0];
 	// make the widgets take up all available space
@@ -19,6 +20,10 @@ GtkMainWindow::GtkMainWindow(Controller& c, Model& model) :
 //	}
 
 	// signal handlers
+	btn_back.signal_clicked().connect(
+			sigc::mem_fun(&controller, &Controller::onBackBtnActivated));
+	btn_forward.signal_clicked().connect(
+			sigc::mem_fun(&controller, &Controller::onForwardBtnActivated));
 	btn_up.signal_clicked().connect(
 			sigc::mem_fun(&controller, &Controller::onUpBtnActivated));
 	addr_bar.signal_activate().connect(
@@ -26,8 +31,10 @@ GtkMainWindow::GtkMainWindow(Controller& c, Model& model) :
 
 	// add and fill grid
 	add(grid);
-	grid.attach(addr_bar, 1, 0, 1, 1);
-	grid.attach(btn_up, 0, 0, 1, 1);
+	grid.attach(btn_back, 0, 0, 1, 1);
+	grid.attach(btn_forward, 1, 0, 1, 1);
+	grid.attach(btn_up, 2, 0, 1, 1);
+	grid.attach(addr_bar, 3, 0, 1, 1);
 //	grid.attach(*(dynamic_cast<GtkPane*>(panes[0])), 0, 1, 2, 1);
 
 //	Directory dir(Path("/home/dddsnn"));
@@ -40,11 +47,16 @@ GtkMainWindow::~GtkMainWindow() {
 }
 
 void FileB::GtkMainWindow::update() {
+	// set the address bar
 	std::string path_string(model.getCurrentPath().getPathString());
 	// append a trailing slash unless root
 	if(path_string != "/")
 		path_string += "/";
 	addr_bar.get_buffer()->set_text(path_string);
+
+	// activate back/forward buttons
+	btn_back.set_sensitive(model.hasBackHistory());
+	btn_forward.set_sensitive(model.hasForwardHistory());
 }
 
 void FileB::GtkMainWindow::onAddrBarActivated() const {
@@ -54,7 +66,7 @@ void FileB::GtkMainWindow::onAddrBarActivated() const {
 
 void FileB::GtkMainWindow::addPane(GtkPane* pane, int pane_id) {
 	MainWindow::addPane(pane, pane_id);
-	grid.attach(*pane, 0, 1, 2, 1);
+	grid.attach(*pane, 0, 1, 4, 1);
 	show_all_children();
 }
 

@@ -17,5 +17,6 @@ fileb_SOURCES = \
 	src/gui/gtk/GtkPane.cpp \
 	src/gui/gtk/GtkView.cpp \
 	src/model/History.cpp \
+	src/model/HistoryException.cpp \
 	src/model/Model.cpp \
 	src/model/ViewModel.cpp

@@ -1,8 +1,9 @@
-#ifndef SRC_GUI_VIEWMODEL_H_
-#define SRC_GUI_VIEWMODEL_H_
+#ifndef SRC_MODEL_VIEWMODEL_H_
+#define SRC_MODEL_VIEWMODEL_H_
 
 #include "../fs/Directory.h"
 #include "../Observable.h"
+#include "History.h"
 
 #include <memory>
 
@@ -24,12 +25,17 @@ class ViewModel: public Observable {
 		ViewModel();
 		virtual ~ViewModel();
 		std::shared_ptr<const std::list<File*>> getCurrentFiles() const;
-		void showPath(const Path& path);
+		void activatePath(const Path& path);
+		const Path& showPreviousPath();
+		const Path& showNextPath();
 		const Path& getCurrentPath() const;
+		bool hasBackHistory();
+		bool hasForwardHistory();
 
 	private:
 		std::shared_ptr<const std::list<File*>> current_files;
-		Path current_path;
+		History history;
+		void showPath(const Path& path);
 };
 }
 #endif

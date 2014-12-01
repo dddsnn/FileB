@@ -15,7 +15,7 @@ Pane::~Pane() {
 }
 
 void FileB::Pane::addView(View* view, int view_id) {
-	views[id] = view;
+	views[view_id] = view;
 }
 
 int FileB::Pane::newPaneGUID() {
