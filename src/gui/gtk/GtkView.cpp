@@ -129,18 +129,8 @@ void GtkView::updateNameCol(Gtk::CellRenderer*,
 void GtkView::updateContentCol(Gtk::CellRenderer*,
 		const Gtk::TreeModel::iterator& i) {
 	if(i) {
-		int content = i->get_value(cols.content);
-		Glib::ustring text;
-		switch(content) {
-		case File::CONTENT_UNKNOWN:
-			text = "unknown";
-			break;
-		case File::CONTENT_DIRECTORY:
-			text = "directory";
-			break;
-		default:
-			text = "";
-		}
+		std::string content = i->get_value(cols.content);
+		Glib::ustring text(content);
 		cellrend_content.property_text() = text;
 	}
 }
@@ -199,33 +189,33 @@ void GtkView::update() {
 
 int FileB::GtkView::compareNames(const Gtk::TreeModel::iterator& a,
 		const Gtk::TreeModel::iterator& b) {
-	std::string string_a = a->get_value(cols.name);
-	std::string string_b = b->get_value(cols.name);
+	const std::string& string_a = a->get_value(cols.name);
+	const std::string& string_b = b->get_value(cols.name);
 	return string_a.compare(string_b);
 }
 
 int FileB::GtkView::compareContents(const Gtk::TreeModel::iterator& a,
 		const Gtk::TreeModel::iterator& b) {
-	int content_a = a->get_value(cols.content);
-	int content_b = b->get_value(cols.content);
-	return GtkView::compareInts(content_a, content_b);
+	const std::string& content_a = a->get_value(cols.content);
+	const std::string& content_b = b->get_value(cols.content);
+	return content_a.compare(content_b);
 }
 
 int FileB::GtkView::compareSizes(const Gtk::TreeModel::iterator& a,
 		const Gtk::TreeModel::iterator& b) {
-	int content_a = a->get_value(cols.content);
-	int content_b = b->get_value(cols.content);
+	int type_a = a->get_value(cols.file)->getType();
+	int type_b = b->get_value(cols.file)->getType();
 	off_t size_a = a->get_value(cols.size);
 	off_t size_b = b->get_value(cols.size);
 	// sort directories up top, no preference between directories
-	if(content_a == File::CONTENT_DIRECTORY
-			&& content_b == File::CONTENT_DIRECTORY)
+	if(type_a == File::TYPE_DIRECTORY
+			&& type_b == File::TYPE_DIRECTORY)
 		return 0;
-	else if(content_a == File::CONTENT_DIRECTORY
-			&& content_b != File::CONTENT_DIRECTORY)
+	else if(type_a == File::TYPE_DIRECTORY
+			&& type_b != File::TYPE_DIRECTORY)
 		return -1;
-	else if(content_a != File::CONTENT_DIRECTORY
-			&& content_b == File::CONTENT_DIRECTORY)
+	else if(type_a != File::TYPE_DIRECTORY
+			&& type_b == File::TYPE_DIRECTORY)
 		return 1;
 	else
 		return GtkView::compareInts(size_a, size_b);

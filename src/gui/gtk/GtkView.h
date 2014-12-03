@@ -29,7 +29,7 @@ class GtkView: public View, public Gtk::ScrolledWindow {
 				}
 
 				Gtk::TreeModelColumn<std::string> name;
-				Gtk::TreeModelColumn<int> content;
+				Gtk::TreeModelColumn<std::string> content;
 				Gtk::TreeModelColumn<off_t> size;
 				Gtk::TreeModelColumn<uid_t> owner;
 				Gtk::TreeModelColumn<gid_t> group;

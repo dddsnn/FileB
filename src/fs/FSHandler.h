@@ -35,7 +35,7 @@ class FSHandler {
 		/// Read file system information about a file.
 		File* statFile(const Path& path);
 		static FSHandler* m_instance;
-		void getContentType(const Path& path);
+		static void setContentTypes(const std::list<File*>& files);
 };
 }
 

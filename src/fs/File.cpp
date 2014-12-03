@@ -8,12 +8,12 @@ using namespace FileB;
 
 File::File() :
 	path("/"),
-	content(File::CONTENT_UNKNOWN) {}
+	content() {}
 
 File::File(const Path p, int t) :
 	path(p),
 	type(t),
-	content(File::CONTENT_UNKNOWN) {}
+	content() {}
 
 /**
  * \param dir the Directory this File resides in
@@ -22,7 +22,7 @@ File::File(const Path p, int t) :
  */
 File::File(const Directory dir, std::string name, int t) :
 	type(t),
-	content(File::CONTENT_UNKNOWN)
+	content()
 {
 	path = dir.getPath();
 	path.append(name);
@@ -50,8 +50,6 @@ bool File::isHidden() const {
 	return false;
 }
 
-//void File::asd() {}
-
 int File::getType() const {
 	return type;
 }
@@ -60,11 +58,11 @@ void File::setType(int t) {
 	type = t;
 }
 
-int File::getContent() const {
+const std::string& File::getContent() const {
 	return content;
 }
 
-void File::setContent(int c) {
+void File::setContent(const std::string& c) {
 	content = c;
 }
 

@@ -28,8 +28,8 @@ class File {
 		bool isHidden() const;
 		int getType() const;
 		void setType(int type);
-		int getContent() const;
-		void setContent(int content);
+		const std::string& getContent() const;
+		void setContent(const std::string& content);
 		uid_t getOwner() const;
 		void setOwner(uid_t owner);
 		gid_t getGroup() const;
@@ -49,14 +49,12 @@ class File {
 			TYPE_LINK,
 			TYPE_MSGQ,
 			TYPE_SEM,
-			TYPE_SHMEM,
-			CONTENT_UNKNOWN,
-			CONTENT_DIRECTORY
+			TYPE_SHMEM
 		};
 	protected:
 		Path path;
 		int type;
-		int content;
+		std::string content;
 		uid_t owner;
 		gid_t group;
 		off_t size;

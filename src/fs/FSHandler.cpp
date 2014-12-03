@@ -12,6 +12,7 @@
 #include <grp.h>
 #include <sstream>
 #include <magic.h>
+#include <memory>
 
 using namespace FileB;
 
@@ -101,10 +102,9 @@ std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
 	} catch(FSException&) {
 		throw;
 	}
+	// TODO commented out because slow
+//	FSHandler::setContentTypes(dynamic_cast<const std::list<File*>&>(*dir));
 	dir->markComplete();
-	for(Directory::iterator i = dir->begin();i!=dir->end();i++){
-		getContentType((*i)->getPath().getPathString());
-	}
 	return dir;
 }
 
@@ -244,13 +244,14 @@ std::string FSHandler::getGroupName(gid_t gid) const {
 	}
 }
 
-void FileB::FSHandler::getContentType(const Path& path) {
-//	if(path.getPathString()[0] == '.')
-//		return;
-	magic_t magic_cookie = magic_open(MAGIC_NONE);
+void FileB::FSHandler::setContentTypes(const std::list<File*>& files) {
+	//TODO error handling
+	magic_t magic_cookie = magic_open(MAGIC_MIME);
 	magic_load(magic_cookie, 0);
-	const char* res = magic_file(magic_cookie, path.getPathString().c_str());
-//	const char* res = "asdf";
-	std::cout << path.getPathString() << " : " << res << std::endl;
+	for(std::list<File*>::const_iterator f = files.begin(); f != files.end(); f++) {
+		const char* content = magic_file(magic_cookie,
+				(*f)->getPath().getPathString().c_str());
+		(*f)->setContent(std::string(content));
+	}
 	magic_close(magic_cookie);
 }

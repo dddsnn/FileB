@@ -3,27 +3,22 @@
 using namespace FileB;
 
 Directory::Directory() :
-	File(),
-	complete(false)
-{
-	content = File::CONTENT_DIRECTORY;
+		File(), complete(false) {
+	content = "directory";
 }
 
 Directory::Directory(const Path& path) :
-	File(path, File::TYPE_DIRECTORY),
-	complete(false)
-{
-	content = File::CONTENT_DIRECTORY;
+		File(path, File::TYPE_DIRECTORY), complete(false) {
+	content = "directory";
 }
 
 Directory::Directory(const Directory& dir, std::string name) :
-	File(dir, name, File::TYPE_DIRECTORY),
-	complete(false)
-{
-	content = File::CONTENT_DIRECTORY;
+		File(dir, name, File::TYPE_DIRECTORY), complete(false) {
+	content = "directory";
 }
 
-Directory::~Directory() {}
+Directory::~Directory() {
+}
 
 bool Directory::isComplete() const {
 	return complete;
