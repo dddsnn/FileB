@@ -11,6 +11,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <sstream>
+#include <magic.h>
 
 using namespace FileB;
 
@@ -43,6 +44,7 @@ std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
 	} catch(FSException&) {
 		throw;
 	}
+
 	while((ep = readdir64(dp))) {
 		Path file_path(path);
 		file_path.append(std::string(ep->d_name));
@@ -100,6 +102,9 @@ std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
 		throw;
 	}
 	dir->markComplete();
+	for(Directory::iterator i = dir->begin();i!=dir->end();i++){
+		getContentType((*i)->getPath().getPathString());
+	}
 	return dir;
 }
 
@@ -237,4 +242,15 @@ std::string FSHandler::getGroupName(gid_t gid) const {
 		s << gid;
 		return s.str();
 	}
+}
+
+void FileB::FSHandler::getContentType(const Path& path) {
+//	if(path.getPathString()[0] == '.')
+//		return;
+	magic_t magic_cookie = magic_open(MAGIC_NONE);
+	magic_load(magic_cookie, 0);
+	const char* res = magic_file(magic_cookie, path.getPathString().c_str());
+//	const char* res = "asdf";
+	std::cout << path.getPathString() << " : " << res << std::endl;
+	magic_close(magic_cookie);
 }

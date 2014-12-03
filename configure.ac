@@ -11,7 +11,7 @@ AC_PROG_CXX
 
 AC_CONFIG_FILES(Makefile)
 
-dnl gtkmm
+dnl libraries
 PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0])
 
 AC_OUTPUT
