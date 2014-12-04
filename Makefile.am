@@ -1,5 +1,6 @@
 bin_PROGRAMS = fileb
 fileb_CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic $(GTKMM_CFLAGS)
+# TODO only include libmagic if needed
 fileb_LDADD = $(GTKMM_LIBS) -lmagic
 fileb_SOURCES = \
 	src/Application.cpp \

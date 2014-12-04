@@ -1,3 +1,5 @@
+#define FILE_INFO_GIO
+
 #include "FSHandler.h"
 #include "../Application.h"
 #include "FSException.h"
@@ -11,8 +13,14 @@
 #include <pwd.h>
 #include <grp.h>
 #include <sstream>
-#include <magic.h>
 #include <memory>
+
+#if defined FILE_INFO_GIO
+#include <glibmm.h>
+#include <giomm.h>
+#elif defined FILE_INFO_LIBMAGIC
+#include <magic.h>
+#endif
 
 using namespace FileB;
 
@@ -102,8 +110,7 @@ std::shared_ptr<const Directory> FSHandler::listDir(const Path& path) {
 	} catch(FSException&) {
 		throw;
 	}
-	// TODO commented out because slow
-//	FSHandler::setContentTypes(dynamic_cast<const std::list<File*>&>(*dir));
+	FSHandler::setContentTypes(dynamic_cast<const std::list<File*>&>(*dir));
 	dir->markComplete();
 	return dir;
 }
@@ -244,6 +251,24 @@ std::string FSHandler::getGroupName(gid_t gid) const {
 	}
 }
 
+#if defined FILE_INFO_GIO
+
+void FileB::FSHandler::setContentTypes(const std::list<File*>& files) {
+	// TODO error handling
+	std::string attr("standard::content-type");
+	for(std::list<File*>::const_iterator f = files.begin(); f != files.end();
+			f++) {
+		const char* path_string = (*f)->getPath().getPathString().c_str();
+		Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(path_string);
+		Glib::RefPtr<Gio::FileInfo> info = file->query_info(attr);
+		Glib::ustring type = info->get_attribute_string(attr);
+		Glib::ustring desc = Gio::content_type_get_description(type);
+		(*f)->setContent(desc);
+	}
+}
+
+#elif defined FILE_INFO_LIBMAGIC
+
 void FileB::FSHandler::setContentTypes(const std::list<File*>& files) {
 	//TODO error handling
 	magic_t magic_cookie = magic_open(MAGIC_MIME);
@@ -255,3 +280,5 @@ void FileB::FSHandler::setContentTypes(const std::list<File*>& files) {
 	}
 	magic_close(magic_cookie);
 }
+
+#endif
